@@ -1,0 +1,14 @@
+{
+  "accountSetting":{
+    "results": {
+      "Accounts": {
+        "Customer":{
+          "customers_first_name":"juan",
+          "customers_last_name":"dela cruz",
+          "customer_username":"juan.dela.cruz",
+          "email_promotional":true
+        }
+      }
+    }
+  }
+}

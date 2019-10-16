@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+DOCKER_REGISTRY=${DOCKER_REGISTRY:-gitlab.usautoparts.com:5000}
+tag=$DOCKER_REGISTRY/usap/nexus-node-composite
+
+docker build -f ./docker/app/Dockerfile -t "$tag:$IMAGE_TAG" .
+docker build -f ./docker/app/Dockerfile -t "$tag:latest" .
+
+docker push "$tag:$IMAGE_TAG"
+docker push "$tag:latest"

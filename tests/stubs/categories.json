@@ -1,0 +1,32 @@
+{
+  "upToCategory": {
+    "Top Level": ["Category"]
+  },
+  "upToSubCategory": {
+    "Top Level": {
+      "Category": ["Sub-category"]
+    }
+  },
+  "upToPartName": {
+    "Top Level": {
+      "Category": {
+        "Sub Category": ["Part name"]
+      }
+    }
+  },
+  "complete": {
+    "Interior Accessories": {
+      "Floor Mats & Liner": [
+        "Floor Mats"
+      ],
+      "Dash & Dash Accessories": {
+        "Dash Electrical": [
+          "Some random brand"
+        ]
+      }
+    },
+    "Auto Body Parts & Mirrors": {
+      "Bumpers & Components": ["Bumper Cover", "Bumper"]
+    }
+  }
+}

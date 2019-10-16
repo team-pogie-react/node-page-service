@@ -1,0 +1,40 @@
+{
+  "scene7": {
+    "data": "Autos/gm24er_1;Autos/gm24er_1,Autos/gm24er_2;Autos/gm24er_2,Autos/gm24er_3;Autos/gm24er_3,Autos/gm24er_4;Autos/gm24er_4,Autos/gm24er_5;Autos/gm24er_5,Autos/gm24er_6;Autos/gm24er_6,Autos/gm24er_20;Autos/gm24er_20\r\n"
+  },
+  "cloudinary": {
+    "data": {
+      "resources": [{
+        "public_id": "images/gm24er_1",
+        "version": 1561089331,
+        "format": "jpg",
+        "width": 4811,
+        "height": 2478,
+        "type": "upload",
+        "created_at": "2019-06-21T03:55:31Z"
+      }]
+    }
+  },
+  "cloudinaryWithDot": {
+    "data": {
+      "resources": [{
+        "public_id": "images/ce135.40103_2",
+        "version": 1561613215,
+        "format": "jpg",
+        "width": 625,
+        "height": 638,
+        "type": "upload",
+        "created_at": "2019-06-27T05:26:55Z"
+      }, {
+        "public_id": "images/ce135.40103_1",
+        "version": 1561613214,
+        "format": "jpg",
+        "width": 400,
+        "height": 238,
+        "type": "upload",
+        "created_at": "2019-06-27T05:26:54Z"
+      }],
+      "updated_at": "2019-08-22T00:51:24Z"
+    }
+  }
+}

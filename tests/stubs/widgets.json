@@ -1,0 +1,23 @@
+{
+  "search": {
+    "name": "Search",
+    "widget": "Search",
+    "env": "production",
+    "order": 4,
+    "active": true,
+    "sites": "carparts.com",
+    "pages": "search",
+    "layoutParams": {},
+    "apiDetails": {
+      "mapping": "records"
+    },
+    "serverSide": false,
+    "abTesting": "",
+    "staticHTML": "",
+    "_id": "5cb06c7d7daed4001987aedb",
+    "createdAt": "2019-04-12T10:46:21.543Z",
+    "updatedAt": "2019-04-25T10:14:31.505Z",
+    "__v": 0,
+    "id": "5cb06c7d7daed4001987aedb"
+  }
+}

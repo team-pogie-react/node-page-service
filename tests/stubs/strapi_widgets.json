@@ -1,0 +1,438 @@
+{
+  "home": [{
+      "name": "HeaderFirst",
+      "widget": "HeaderFirst",
+      "env": "production",
+      "order": 1,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,mrunal,make,part,amp,sku,login,makemodel",
+      "layoutParams": {},
+      "apiDetails": {
+        "props": {
+          "links": [{
+              "label": "DAILY DEALS",
+              "icon": "Note",
+              "uri": "/static/assets/images/Icon_deals.svg",
+              "action": "#"
+            },
+            {
+              "label": "Retrieve quote",
+              "icon": "Chat",
+              "uri": "/static/assets/images/Icon_quote.svg",
+              "action": "#"
+            },
+            {
+              "label": "Track order",
+              "icon": "User",
+              "uri": "/static/assets/images/Icon_order.svg",
+              "action": "#"
+            }
+          ]
+        },
+        "mapping": "meta"
+      },
+      "serverSide": true,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c922ba75745110013b5cfc1",
+      "createdAt": "2019-03-20T12:01:43.276Z",
+      "updatedAt": "2019-04-26T13:31:35.405Z",
+      "__v": 0,
+      "id": "5c922ba75745110013b5cfc1"
+    },
+    {
+      "name": "Header",
+      "widget": "Header",
+      "env": "production",
+      "order": 2,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,mrunal,amp,make,part,sku,makemodel",
+      "layoutParams": {},
+      "apiDetails": {
+        "props": {
+          "logo": "/static/assets/images/cp-logo.svg",
+          "person": "/static/assets/images/person.svg",
+          "cart": "/static/assets/images/shopping-cart.svg",
+          "car": "/static/assets/images/car.svg"
+        },
+        "mapping": "popularCategories"
+      },
+      "serverSide": true,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c94713b5745110013b5cfc5",
+      "createdAt": "2019-03-22T05:23:07.066Z",
+      "updatedAt": "2019-04-26T13:34:05.652Z",
+      "__v": 0,
+      "id": "5c94713b5745110013b5cfc5"
+    },
+    {
+      "name": "HeaderMenu",
+      "widget": "HeaderMenu",
+      "env": "production",
+      "order": 3,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,mrunal,part,make,sku,makemodel",
+      "layoutParams": {},
+      "apiDetails": {
+        "mapping": "popularCategories"
+      },
+      "serverSide": true,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c947d635745110013b5cfc7",
+      "createdAt": "2019-03-22T06:14:59.036Z",
+      "updatedAt": "2019-04-26T13:34:11.913Z",
+      "__v": 0,
+      "id": "5c947d635745110013b5cfc7"
+    },
+    {
+      "name": "Carousel",
+      "widget": "Carousel",
+      "env": "production",
+      "order": 4,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "mrunal,home,amp",
+      "layoutParams": {},
+      "apiDetails": {
+        "props": [{
+            "img": "/static/assets/heroshot/img/hs-sample1.jpg",
+            "alt": "hs-sample1"
+          },
+          {
+            "img": "/static/assets/heroshot/img/hs-sample2.jpg",
+            "alt": "hs-sample2"
+          },
+          {
+            "img": "/static/assets/heroshot/img/hs-sample3.jpg",
+            "alt": "hs-sample3"
+          },
+          {
+            "img": "/static/assets/heroshot/img/hs-sample4.jpg",
+            "alt": "hs-sample4"
+          },
+          {
+            "img": "/static/assets/heroshot/img/hs-sample5.jpg",
+            "alt": "hs-sample5"
+          }
+        ]
+      },
+      "serverSide": true,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c948ec05745110013b5cfc8",
+      "createdAt": "2019-03-22T07:29:04.313Z",
+      "updatedAt": "2019-04-26T11:41:32.954Z",
+      "__v": 0,
+      "id": "5c948ec05745110013b5cfc8"
+    },
+    {
+      "name": "SearchBox",
+      "widget": "SearchBox",
+      "env": "production",
+      "order": 5,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,mrunal,amp,part,make,sku,makemodel",
+      "layoutParams": {},
+      "apiDetails": {},
+      "serverSide": true,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c9498595745110013b5cfc9",
+      "createdAt": "2019-03-22T08:10:01.569Z",
+      "updatedAt": "2019-04-26T13:34:21.120Z",
+      "__v": 0,
+      "id": "5c9498595745110013b5cfc9"
+    },
+    {
+      "name": "Category",
+      "widget": "Category",
+      "env": "production",
+      "order": 7,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,mrunal,amp",
+      "layoutParams": {},
+      "apiDetails": {
+        "mapping": "popularCategories"
+      },
+      "serverSide": true,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c9233195745110013b5cfc2",
+      "createdAt": "2019-03-20T12:33:29.973Z",
+      "updatedAt": "2019-04-26T11:17:47.261Z",
+      "__v": 0,
+      "id": "5c9233195745110013b5cfc2"
+    },
+    {
+      "name": "Popular Part",
+      "widget": "PopularParts",
+      "env": "production",
+      "order": 8,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,omkar,mrunal,amp",
+      "layoutParams": {},
+      "apiDetails": {
+        "props": [{
+            "name": "Tailgate",
+            "img": "/static/assets/home_popularparts/img/01.jpg"
+          },
+          {
+            "name": "Hood",
+            "img": "/static/assets/home_popularparts/img/02.jpg"
+          },
+          {
+            "name": "Brake Disc and Pad Kit",
+            "img": "/static/assets/home_popularparts/img/03.jpg"
+          },
+          {
+            "name": "Cold Air Intake",
+            "img": "/static/assets/home_popularparts/img/04.jpg"
+          },
+          {
+            "name": "Window Regulator",
+            "img": "/static/assets/home_popularparts/img/05.jpg"
+          },
+          {
+            "name": "Carpet Kit",
+            "img": "/static/assets/home_popularparts/img/06.jpg"
+          },
+          {
+            "name": "Lift Support",
+            "img": "/static/assets/home_popularparts/img/07.jpg"
+          },
+          {
+            "name": "Fuel Pump",
+            "img": "/static/assets/home_popularparts/img/08.jpg"
+          },
+          {
+            "name": "Mud Flaps",
+            "img": "/static/assets/home_popularparts/img/09.jpg"
+          },
+          {
+            "name": "Exterior Door Handle",
+            "img": "/static/assets/home_popularparts/img/10.jpg"
+          },
+          {
+            "name": "Fog Light",
+            "img": "/static/assets/home_popularparts/img/11.jpg"
+          },
+          {
+            "name": "Wheel Hub",
+            "img": "/static/assets/home_popularparts/img/12.jpg"
+          }
+        ]
+      },
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c98968ed5edc800124cb08b",
+      "createdAt": "2019-03-25T08:51:26.408Z",
+      "updatedAt": "2019-04-26T11:18:22.547Z",
+      "__v": 0,
+      "id": "5c98968ed5edc800124cb08b"
+    },
+    {
+      "name": "Top Brand",
+      "widget": "TopBrands",
+      "env": "production",
+      "order": 9,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,omkar,mrunal,amp",
+      "layoutParams": {},
+      "apiDetails": {
+        "mapping": "topBrands"
+      },
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c9896afd5edc800124cb08c",
+      "createdAt": "2019-03-25T08:51:59.371Z",
+      "updatedAt": "2019-04-26T11:18:27.838Z",
+      "__v": 0,
+      "id": "5c9896afd5edc800124cb08c"
+    },
+    {
+      "name": "Blog",
+      "widget": "Blog",
+      "env": "production",
+      "order": 10,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,omkar,mrunal,amp",
+      "layoutParams": {},
+      "apiDetails": {},
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c9882b4d5edc800124cb08a",
+      "createdAt": "2019-03-25T07:26:44.990Z",
+      "updatedAt": "2019-04-17T06:51:28.116Z",
+      "__v": 0,
+      "id": "5c9882b4d5edc800124cb08a"
+    },
+    {
+      "name": "FeaturedList",
+      "widget": "FeaturedList",
+      "env": "production",
+      "order": 12,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,omkar,mrunal,amp",
+      "layoutParams": {},
+      "apiDetails": {},
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c94aeab5745110013b5cfcb",
+      "createdAt": "2019-03-22T09:45:15.982Z",
+      "updatedAt": "2019-04-26T11:44:14.367Z",
+      "__v": 0,
+      "id": "5c94aeab5745110013b5cfcb"
+    },
+    {
+      "name": "Video",
+      "widget": "Video",
+      "env": "production",
+      "order": 13,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,omkar,mrunal,amp,part,make,makemodel",
+      "layoutParams": {},
+      "apiDetails": {},
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c988096d5edc800124cb089",
+      "createdAt": "2019-03-25T07:17:42.102Z",
+      "updatedAt": "2019-04-26T13:34:30.896Z",
+      "__v": 0,
+      "id": "5c988096d5edc800124cb089"
+    },
+    {
+      "name": "Rating",
+      "widget": "Rating",
+      "env": "production",
+      "order": 14,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home",
+      "layoutParams": {},
+      "apiDetails": {},
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5cc044eb6cbadd0019ac7bfa",
+      "createdAt": "2019-04-24T11:13:47.021Z",
+      "updatedAt": "2019-04-26T11:32:52.032Z",
+      "__v": 0,
+      "id": "5cc044eb6cbadd0019ac7bfa"
+    },
+    {
+      "name": "Footer",
+      "widget": "Footer",
+      "env": "production",
+      "order": 15,
+      "active": true,
+      "sites": "carparts.com",
+      "pages": "home,omkar,mrunal,amp,make,part,login,sku,makemodel",
+      "layoutParams": {},
+      "apiDetails": {
+        "props": {
+          "contact": {
+            "name": "CONTACT US",
+            "info": [{
+                "key": "Address",
+                "value": [
+                  "16941 Keegan Avenue Carson, CA",
+                  "90746"
+                ]
+              },
+              {
+                "key": "Email",
+                "value": [
+                  "service@stylintrucks.com",
+                  "info@stylintrucks.com"
+                ]
+              },
+              {
+                "key": "Phone Number",
+                "value": [
+                  "Toll Free: 1-800-586-9713",
+                  "International: 1-216-643-6600",
+                  "Fax: 1-216-643-6610"
+                ]
+              }
+            ]
+          },
+          "customer": {
+            "name": "CUSTOMER SERVICE",
+            "info": [{
+                "name": "Help Center"
+              },
+              {
+                "name": "My Account"
+              },
+              {
+                "name": "Track Order"
+              },
+              {
+                "name": "Retrive Quote"
+              },
+              {
+                "name": "Contact Us"
+              },
+              {
+                "name": "Live Chat"
+              },
+              {
+                "name": "Daily Deals"
+              }
+            ]
+          },
+          "information": {
+            "name": "INFORMATION",
+            "info": [{
+                "name": "Company Info"
+              },
+              {
+                "name": "Feequently Asked Queations"
+              },
+              {
+                "name": "Return & Exchanges"
+              },
+              {
+                "name": "Coupons & Rebates"
+              },
+              {
+                "name": "Affiliates"
+              },
+              {
+                "name": "California Suppy Chain Disclosure"
+              },
+              {
+                "name": "Outlet Store"
+              }
+            ]
+          }
+        }
+      },
+      "serverSide": false,
+      "abTesting": "",
+      "staticHTML": "",
+      "_id": "5c9238455745110013b5cfc4",
+      "createdAt": "2019-03-20T12:55:33.950Z",
+      "updatedAt": "2019-04-26T13:34:25.594Z",
+      "__v": 0,
+      "id": "5c9238455745110013b5cfc4"
+    }
+  ]
+}

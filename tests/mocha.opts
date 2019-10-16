@@ -1,0 +1,6 @@
+--ui bdd
+--timeout 20000
+--require dotenv/config
+--require @babel/register
+--require @babel/polyfill
+--file ./tests/setup.js

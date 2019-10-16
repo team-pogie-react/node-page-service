@@ -1,0 +1,26 @@
+{
+  "withError": {
+    "_callstatus": {
+      "status": "error",
+      "error_code": 42,
+      "error_message": "Internal Service Error"
+    }
+  },
+  "withEmptyPayload": {
+    "_callstatus": {
+      "response_time": 0.6874,
+      "status": "ok",
+      "cache": false,
+      "server": "some-server.hydra.local"
+    }
+  },
+  "withEmptyResult": {
+    "_callstatus": {
+      "response_time": 0.0194,
+      "status": "ok",
+      "cache": false,
+      "server": "CSSOASTAGFE02.perfectfitgroup.local"
+    },
+    "_payload": { "result": { "getCategories": "SUCC5001" } }
+  }
+}

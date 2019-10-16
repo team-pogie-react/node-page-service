@@ -1,0 +1,17 @@
+# ignore
+node_modules
+npm-debug.log
+docker-compose*.yml
+docker/**
+.dockerignore
+.vscode
+.env
+.env.example
+.gitignore
+.git
+README.md
+LICENSE
+dist
+
+# allow
+!/docker/app/**

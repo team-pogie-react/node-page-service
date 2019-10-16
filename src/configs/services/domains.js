@@ -1,0 +1,57 @@
+import operationKeys from './operation-keys';
+
+const DOMAINS = {
+  CARPARTS: 'carparts.com',
+  AUTOPARTSWAREHOUSE: 'autopartswarehouse.com',
+  JCW: 'jcwhitney.com',
+};
+
+const DOMAIN_VARIANTS = {
+  WWW_CARPARTS: 'www.carparts.com',
+  WWW_AUTOPARTSWAREHOUSE: 'www.autopartswarehouse.com',
+  APW: 'apw',
+};
+
+const DOMAIN_MAPPINGS = {
+
+  [DOMAINS.CARPARTS]: {
+    [operationKeys.GET_CATEGORIES]: DOMAINS.CARPARTS,
+    [operationKeys.GET_RELATEDCATEGORIES]: DOMAINS.CARPARTS,
+    [operationKeys.GET_PROMO_BANNERS]: DOMAIN_VARIANTS.APW,
+    [operationKeys.GET_TOP_SEO]: DOMAIN_VARIANTS.WWW_CARPARTS,
+    [operationKeys.GET_YEARS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_SEO_YEARS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_CONTENTS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_ARTICLE_DATA]: DOMAIN_VARIANTS.WWW_CARPARTS,
+    [operationKeys.GET_CATEGORY_PRODUCTS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_PRODUCTS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_ORDER]: DOMAINS.CARPARTS,
+    [operationKeys.GET_SHIPPING_METHOD]: DOMAINS.CARPARTS,
+    [operationKeys.GET_BT_TOKEN]: DOMAINS.CARPARTS,
+    [operationKeys.GET_CATEGORY_PRODUCTS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_VEHICLE_ID]: DOMAINS.CARPARTS,
+    [operationKeys.GET_VEHICLEPLDBID]: DOMAINS.CARPARTS,
+    [operationKeys.GET_CONTENTS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_ACCOUNTS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_ORDERS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_ORDERS_DETAILS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_CUSTOMER]: DOMAINS.CARPARTS,
+    [operationKeys.GET_GARAGE]: DOMAINS.CARPARTS,
+    [operationKeys.GET_VEHICLE_INFO]: DOMAINS.CARPARTS,
+    [operationKeys.GET_BRAND_PART]: DOMAINS.CARPARTS,
+    [operationKeys.SEARCH]: DOMAINS.CARPARTS,
+    [operationKeys.GET_PRODUCT_DETAILS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_TOP40_PARTS]: DOMAINS.CARPARTS,
+    [operationKeys.SEND_EMAIL]: DOMAINS.CARPARTS,
+    [operationKeys.GET_CUSTOMERID]: DOMAINS.CARPARTS,
+
+    [operationKeys.GET_BT_TOKEN]: DOMAINS.CARPARTS,
+    [operationKeys.GET_SEARCH]: DOMAINS.CARPARTS,
+    [operationKeys.SEO.GET_PRODUCTS]: DOMAINS.CARPARTS,
+    [operationKeys.SEO.URL_SOURCE_LOOKUP]: DOMAINS.CARPARTS,
+    [operationKeys.PDP.GET_PRODUCT_DETAILS]: DOMAINS.CARPARTS,
+    [operationKeys.GET_TURNTO_RATING]: DOMAINS.CARPARTS,
+  },
+};
+
+export { DOMAINS, DOMAIN_VARIANTS, DOMAIN_MAPPINGS };

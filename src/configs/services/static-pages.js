@@ -1,0 +1,120 @@
+export default {
+  CONFIG: {
+    baseUrl: 'upwa-carparts.com',
+  },
+  COMPANY_ABOUT: {
+    uri: '/company/about',
+    slug: 'company-about',
+    pageType: 'st_about',
+    metaType: 'company_about',
+  },
+  CUSTOMER_CARPARTS_ON_EBAY: {
+    uri: '/customer/carpartsonebay',
+    slug: 'carparts-on-ebay',
+    pageType: 'st_carpartsonebay',
+    metaType: 'customer_carpartsonebay',
+  },
+  COMPANY_LOW_PRICE_GUARANTEE: {
+    uri: '/company/lowpriceguarantee',
+    slug: 'low-price-policy',
+    pageType: 'st_lowpriceguarantee',
+    metaType: 'company_lowpriceguarantee',
+  },
+  CUSTOMER_ORDER_STATUS: {
+    uri: '/customer/orderstatus',
+    slug: 'order-status',
+    pageType: 'st_orderstatus',
+    metaType: 'customer_orderstatus',
+  },
+  CUSTOMER_PAYMENT_METHODS: {
+    uri: '/customer/paymentmethods',
+    slug: 'payment-methods',
+    pageType: 'st_paymentmethods',
+    metaType: 'customer_paymentmethods',
+  },
+  CUSTOMER_HOW_TO_SHOP: {
+    uri: '/customer/howtoshop',
+    slug: 'how-to-shop',
+    pageType: 'st_howtoshop',
+    metaType: 'customer_howtoshop',
+  },
+  CUSTOMER_RETURN_POLICY: {
+    uri: '/customer/returnpolicy',
+    slug: 'return-policy',
+    pageType: 'st_returnpolicy',
+    metaType: 'customer_returnpolicy',
+  },
+  CUSTOMER_POLICIES: {
+    uri: '/customer/policies',
+    slug: 'shipping-policy',
+    pageType: 'st_policies',
+    metaType: 'customer_policies',
+  },
+  CUSTOMER_WARRANTY_POLICY: {
+    uri: '/customer/warrantypolicy',
+    slug: 'warranty-policy',
+    pageType: 'st_warrantypolicy',
+    metaType: 'customer_warrantypolicy',
+  },
+  FEEDBACK: {
+    uri: '/feedback',
+    slug: 'feedback',
+    pageType: 'st_feedback',
+    metaType: 'feedback',
+  },
+  CUSTOMER_SERVICE_EMAIL: {
+    uri: '/customerservice/email',
+    slug: 'customerservice-email',
+    pageType: 'st_email',
+    metaType: 'customerservice_email',
+  },
+  BLOG_NEWS: {
+    uri: '/blog/news',
+    slug: 'blog-news',
+    pageType: 'st_news',
+    metaType: 'blog_news',
+  },
+  COMPANY_AFFILIATE: {
+    uri: '/company/affiliate',
+    slug: 'company-affiliate',
+    pageType: 'st_affiliate',
+    metaType: 'company_affiliate',
+  },
+  RETRIEVE_QUOTE: {
+    uri: '/basket/getquote',
+    slug: 'basket-getquote',
+    pageType: 'st_getquote',
+    metaType: 'basket_getquote',
+  },
+  CALIFORNIA_SUPPLY_CHAIN: {
+    uri: '/ajax/californiasupplychain',
+    slug: 'california-supply-chain',
+    pageType: 'st_californiasupplychain',
+    metaType: 'californiasupplychain',
+  },
+  SUBSCRIBE: {
+    uri: '/subscribe',
+    slug: 'subscribe',
+    pageType: 'st_subscribe',
+    metaType: 'subscribe',
+  },
+  EMAIL_OFFERS: {
+    uri: '/email-offers',
+    slug: 'email-offers',
+    pageType: 'st_thankyou_email',
+    metaType: 'email_offers',
+  },
+  PRIVACY_POLICY: {
+    uri: '/privacy-policy',
+    slug: 'privacy-policy',
+    pageType: 'st_privacy_policy',
+    metaType: 'privacy_policy',
+  },
+  TERMS_OF_USE: {
+    uri: '/terms-of-use',
+    slug: 'terms-of-use',
+    pageType: 'st_terms_of_use',
+    metaType: 'terms_of_use',
+  },
+
+};
