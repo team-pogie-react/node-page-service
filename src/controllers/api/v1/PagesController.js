@@ -7,22 +7,8 @@ import Content from '../../../services/Content';
 import Page from '../../../services/Page';
 import Seo from '../../../services/Seo';
 import Vehicle from '../../../services/Vehicle';
-import StrapiWidget from '../../../services/widgets/StrapiWidget';
 
 import BaseController from '../BaseController';
-import BrandController from './Seo/BrandController';
-import BrandPartController from './Seo/BrandPartController';
-import CategoryController from './Seo/CategoryController';
-import MakeModelController from './Seo/MakeModelController';
-import MakeController from './Seo/MakeController';
-import MakeModelPartController from './Seo/MakeModelPartController';
-import MakePartController from './Seo/MakePartController';
-import YearMakeModelPartController from './Seo/YearMakeModelPartController';
-import PageNotFound from './PagenotfoundController';
-import PageRedirect from './PageredirectController';
-import PartController from './Seo/PartController';
-import NonStandardController from './Seo/NonStandardController';
-import PdpController from './Seo/PdpController';
 
 import { compositeErrorHandler } from '../../../errors/handlers';
 import Config from '../../../configs/services/pages';
@@ -34,7 +20,6 @@ import MetasConfig from '../../../configs/services/metas';
 import pdpPageTypes from '../../../configs/services/pdp';
 
 import Blog from '../../../services/Blog';
-import Rating from '../../../services/Rating';
 import constant from '../../../configs/constant';
 
 export default class PagesController extends BaseController {
@@ -50,24 +35,9 @@ export default class PagesController extends BaseController {
     this.categories = new Category();
     this.vehicles = new Vehicle();
     this.contents = new Content();
-    this.widgets = new StrapiWidget();
     this.blog = new Blog();
     this.page = new Page();
     this.videos = new Videos();
-    this.pageNotFound = new PageNotFound();
-    this.pageRedirect = new PageRedirect();
-    this.BrandController = new BrandController();
-    this.MakeController = new MakeController();
-    this.PartController = new PartController();
-    this.MakeModelController = new MakeModelController();
-    this.YearMakeModelPartController = new YearMakeModelPartController();
-    this.BrandPartController = new BrandPartController();
-    this.MakeModelPartController = new MakeModelPartController();
-    this.MakePartController = new MakePartController();
-    this.CategoryController = new CategoryController();
-    this.NonStandardController = new NonStandardController();
-    this.PdpController = new PdpController();
-    this.ratings = new Rating();
     this.structuredData = new StructuredData();
   }
 

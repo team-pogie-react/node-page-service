@@ -2,7 +2,6 @@
 /* eslint no-unused-expressions: 0 */
 import { expect } from 'chai';
 import { DOMAINS } from '../../../../src/configs/services/domains';
-import StrapiWidget from '../../../../src/services/widgets/StrapiWidget';
 
 describe('Strapi Widget Test', () => {
   const widgets = new StrapiWidget();
