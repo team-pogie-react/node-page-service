@@ -393,3 +393,37 @@ export function encodeToVLP(str) {
 
   return paramStr;
 }
+
+
+/**
+ * Validate given string if valid uri and no special chars
+ * @param {String} str
+ */
+export function isAlphaNumeric(str) {
+  let i = 0;
+  let len = 0;
+  for (i = 0, len = str.length; i < len; i++) {
+    const code = str.charCodeAt(i);
+    const schar = [45,95];
+    if (!(code >= 48 && code <= 57) // numeric (0-9)
+        && !(code >= 65 && code <= 90) // upper alpha (A-Z)
+        && !(code >= 97 && code <= 122) // lower alpha (a-z)
+        && !(schar.includes(code))) { // valid special chars
+      return false;
+    }
+  }
+
+  return true;
+}
+
+/**
+ * Clean Console log
+ * @param {String} str
+ */
+export function consoler(label, value) {
+  // eslint-disable-next-line no-console
+  console.log("\n###CONSOLE LOGGER >> "+label+": ",  value);
+  console.log("\n");
+
+  return true;
+}

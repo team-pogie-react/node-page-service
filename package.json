@@ -69,6 +69,7 @@
     "method-override": "^3.0.0",
     "morgan": "^1.9.1",
     "newrelic": "^5.9.1",
+    "number-to-words": "^1.2.4",
     "pidusage": "^2.0.17",
     "qs": "^6.7.0",
     "request-ip": "^2.1.3",
