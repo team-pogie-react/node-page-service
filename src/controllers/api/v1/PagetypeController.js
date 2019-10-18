@@ -1,7 +1,7 @@
 import { _, merge } from 'lodash';
 import converter from 'number-to-words';
 import Content from '../../../services/Content';
-import Page from '../../../services/Page';
+import Pagetype from '../../../services/Pagetype';
 import Seo from '../../../services/Seo';
 import Config from '../../../configs/services/pages';
 
@@ -9,7 +9,7 @@ import BaseController from '../BaseController';
 import { isAlphaNumeric, consoler } from '../../../core/helpers';
 import Videos from '../../../services/Videos';
 import StructuredData from '../../../services/StructuredData';
-
+import CacheInstance from '../../../core/Cache';
 
 export default class PagetypeController extends BaseController {
   /**
@@ -22,9 +22,10 @@ export default class PagetypeController extends BaseController {
     this.config = Config || {};
     this.seo = new Seo();
     this.contents = new Content();
-    this.page = new Page();
+    this.pagetype = new Pagetype();
     this.videos = new Videos();
     this.structuredData = new StructuredData();
+    this.cache = CacheInstance;
   }
 
   /**
@@ -46,7 +47,10 @@ export default class PagetypeController extends BaseController {
       if (_.isEmpty(uri)) {
         return response.withError('Missing URI parameter', 400);
       }
-      uri = uri.substr(1).replace('.html', '');
+      if (uri.charAt(0) === '/') {
+        uri = uri.substr(1);
+      }
+
       consoler('uri', uri);
 
       const validUri = isAlphaNumeric(uri);
@@ -60,26 +64,34 @@ export default class PagetypeController extends BaseController {
       }
 
       // check if exist on redis
+      const redisCache = await this.cache.get(requestUri);
+      consoler('redisCache', redisCache);
+      if (redisCache) {
+        result.results = redisCache;
+
+        return response.withData(result);
+      }
 
       // check if exist on redirector
+      // TODO OF JERVIE
 
       // count the dimension
       const dimension = uri.split('/');
-      let dimensionCount = dimension.length;
 
       // get pattern map base from number of dimension
       if (dimension[0] === 'details' || dimension[0] === 'univ') {
-        dimensionCount -= 1;
+        dimension.splice(0, 1);
       }
 
-      const pattern = self.config[`${converter.toWords(dimensionCount)}_dimension`];
-      consoler('pattern', pattern);
+      const dimensionCount = dimension.length;
 
+      const patternList = self.config[`${converter.toWords(dimensionCount)}_dimension`];
       // check mapping value
 
       // get data from pldb
-      
+      const attrib = this.pagetype.getAttributes(patternList, dimension)
 
+      consoler('attrib', attrib);
       result.request_uri = requestUri;
 
       return response.withData(result);

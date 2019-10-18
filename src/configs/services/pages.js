@@ -36,5 +36,5 @@ export default {
   five_dimension: ['part_make_model_year'],
   six_dimension: ['part_make_model_year'],
   seven_dimension: ['part_make_model_year'],
-  eight_dimension: ['year_make_model_submodel_engine_part_brand_sku','make_model_brand_part_year_submodel_engine_sku'],
+  eight_dimension: ['make_model_brand_part_year_submodel_engine_sku', 'year_make_model_submodel_engine_part_brand_sku'],
 };
