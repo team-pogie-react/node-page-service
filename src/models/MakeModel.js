@@ -1,26 +1,30 @@
-import BaseModel from './BaseModel';
+import Sequelize from 'sequelize';
+import Db from '../core/Db';
 
-export default class MakeModel extends BaseModel {
-  /**
-   * Address Model
-   * @param {String} streetAddress
-   * @param {String} city
-   * @param {String} postcode
-   * @param {String} provice
-   * @param {String} suburbAddress
-   * @param {String} state
-   * @param {String} country
-   *
-   */
 
-  constructor(ds) {
-    super();
-    this.streetAddress = ds.streetAddress;
-    this.city = ds.city;
-    this.postcode = ds.postcode;
-    this.province = ds.province;
-    this.suburbAddress = ds.suburbAddress;
-    this.state = ds.state;
-    this.country = ds.country;
-  }
-}
+const sequelize = new Sequelize('ProductLookupDb_merge_optimized', 'hydra', 'gh56vn', {
+  host: '10.10.75.236',
+  dialect: 'mysql',
+});
+
+export default class Make extends Sequelize.Model {}
+Make.init({
+  // attributes
+  model_name: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    get() {
+      const modelName = this.getDataValue('model_name');
+      // 'this' allows you to access attributes of the instance
+      return `${this.getDataValue('model_name')} (${modelName})`;
+    },
+  },
+  model_id: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+  },
+}, {
+  sequelize,
+  modelName: 'make',
+  // options
+});

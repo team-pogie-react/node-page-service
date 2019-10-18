@@ -3,6 +3,8 @@ import queryString from 'qs';
 import sequelize from 'sequelize';
 import md5 from 'md5';
 import CacheInstance from '../core/Cache';
+import DbInstance from '../core/Db';
+import Make from '../models/MakeModel';
 import SeoApiService from './SeoApiService';
 import TIMEOUTS from '../configs/timeouts';
 import { urls, cache } from '../configs/services';
@@ -16,6 +18,7 @@ export default class Pagetype extends SeoApiService {
     super();
 
     this.cache = CacheInstance;
+    this.db = DbInstance;
     this.pageTransformer = new PageTransformer();
     this.sequelize = new sequelize('ProductLookupDb_merge_optimized', 'hydra', 'gh56vn', {
       host: '10.10.75.236',
@@ -45,7 +48,7 @@ export default class Pagetype extends SeoApiService {
       site: this.getDomain(),
       hash_code: redirectorUri,
     };
-
+    consoler('params', params);
     const query = queryString.stringify(params, { encodeValuesOnly: true });
     const cacheKey = `get_page_type_${this.cache.generateKey(JSON.stringify(params))}`;
 
@@ -70,7 +73,7 @@ export default class Pagetype extends SeoApiService {
 
     _.forEach(patternList, (pattern) => {
       const serialPattern = pattern.split('_');
-      // validAttirb = this.validatePattern(serialPattern, data);
+      //validAttirb = this.validatePattern(serialPattern, data);
     });
 
     consoler('data', data);
@@ -80,12 +83,22 @@ export default class Pagetype extends SeoApiService {
 
   validatePattern(serialPattern, data) {
     let i = 0;
+    const model = new Make;
+    model.findOne({
+      where: { make_name: data[i] },
+      attributes: ['make_id', 'make_name'],
+    }).then((result) => {
+      consoler('db result:', result);
+    });
+
     _.forEach(serialPattern, (table) => {
       // consoler(table, data[i]);
-      this.sequelize.query(`SELECT ${table}_name, ${table}_id FROM ${table}s WHERE ${table}_name = :data`,
+      /* this.sequelize.query(`SELECT ${table}_name, ${table}_id FROM ${table}s WHERE ${table}_name = :data`,
         { replacements: { data: data[i] }, type: sequelize.QueryTypes.SELECT }).then((result) => {
         consoler('result', result);
-      });
+      }); */
+
+      consoler('table', table);
       i += 1;
     });
   }

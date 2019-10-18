@@ -1,17 +1,17 @@
 import { _, merge } from 'lodash';
 import converter from 'number-to-words';
 import Promise from 'bluebird';
+import { REQUEST_TIMEOUT } from 'http-status-codes';
 import Content from '../../../services/Content';
 import Pagetype from '../../../services/Pagetype';
 import Seo from '../../../services/Seo';
 import Config from '../../../configs/services/pages';
 
 import BaseController from '../BaseController';
-import { isAlphaNumeric, consoler } from '../../../core/helpers';
+import { isAlphaNumeric, consoler, isFalsy } from '../../../core/helpers';
 import Videos from '../../../services/Videos';
 import StructuredData from '../../../services/StructuredData';
 import CacheInstance from '../../../core/Cache';
-import { REQUEST_TIMEOUT } from 'http-status-codes';
 
 export default class PagetypeController extends BaseController {
   /**
@@ -79,12 +79,15 @@ export default class PagetypeController extends BaseController {
       let redirectorData = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
-      if (redirectorData) {
+      if ( isFalsy(redirectorData) ) {
         consoler('redirectorData', redirectorData);
         if (redirectorData.status === 'ACTIVE') {
           // TODO Transaform data from redirector to page service format
           return response.withData(redirectorData);
         }
+      } else {
+
+        consoler('redirectorData', 'not found');
       }
 
       // count the dimension
