@@ -404,7 +404,8 @@ export function isAlphaNumeric(str) {
   let len = 0;
   for (i = 0, len = str.length; i < len; i++) {
     const code = str.charCodeAt(i);
-    const schar = [45,95];
+    const schar = [45, 95, 47]; // '-','_','/'
+    // console.log('code',code);
     if (!(code >= 48 && code <= 57) // numeric (0-9)
         && !(code >= 65 && code <= 90) // upper alpha (A-Z)
         && !(code >= 97 && code <= 122) // lower alpha (a-z)
@@ -422,8 +423,8 @@ export function isAlphaNumeric(str) {
  */
 export function consoler(label, value) {
   // eslint-disable-next-line no-console
-  console.log("\n###CONSOLE LOGGER >> "+label+": ",  value);
-  console.log("\n");
+  console.log('\n###CONSOLE LOGGER >> ' + label + ': ', value);
+  console.log('\n');
 
   return true;
 }

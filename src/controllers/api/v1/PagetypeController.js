@@ -1,5 +1,6 @@
 import { _, merge } from 'lodash';
 import converter from 'number-to-words';
+import Promise from 'bluebird';
 import Content from '../../../services/Content';
 import Pagetype from '../../../services/Pagetype';
 import Seo from '../../../services/Seo';
@@ -10,6 +11,7 @@ import { isAlphaNumeric, consoler } from '../../../core/helpers';
 import Videos from '../../../services/Videos';
 import StructuredData from '../../../services/StructuredData';
 import CacheInstance from '../../../core/Cache';
+import { REQUEST_TIMEOUT } from 'http-status-codes';
 
 export default class PagetypeController extends BaseController {
   /**
@@ -58,7 +60,7 @@ export default class PagetypeController extends BaseController {
       const result = {};
 
       // check the validity of uri
-      if (validUriBypass === false && validUri === false) { 
+      if (validUriBypass === false && validUri === false) {
         // return an invalid
         return response.withError('Invalid URI', 400);
       }
@@ -73,7 +75,17 @@ export default class PagetypeController extends BaseController {
       }
 
       // check if exist on redirector
-      // TODO OF JERVIE
+      // we will use the `uri` variable so the / on the first
+      let redirectorData = {};
+      redirectorData = await self._getRedirectorData(domain, requestUri);
+
+      if (redirectorData) {
+        consoler('redirectorData', redirectorData);
+        if (redirectorData.status === 'ACTIVE') {
+          // TODO Transaform data from redirector to page service format
+          return response.withData(redirectorData);
+        }
+      }
 
       // count the dimension
       const dimension = uri.split('/');
@@ -89,7 +101,7 @@ export default class PagetypeController extends BaseController {
       // check mapping value
 
       // get data from pldb
-      const attrib = this.pagetype.getAttributes(patternList, dimension)
+      const attrib = this.pagetype.getAttributes(patternList, dimension);
 
       consoler('attrib', attrib);
       result.request_uri = requestUri;
@@ -98,5 +110,27 @@ export default class PagetypeController extends BaseController {
     } catch (error) {
       return response.withError(error.message, error.status, error.code);
     }
+  }
+
+  /**
+   * Aggregate service calls for home page.
+   *
+   * @param {String} domain
+   * @param {String} uri
+   *
+   * @return {Promise<Object>}
+   */
+  _getRedirectorData(domain, uri) {
+    return new Promise((resolve, reject) => {
+      this.pagetype.setDomain(domain).getData(uri)
+        .then(data => resolve(data))
+        .catch((error) => {
+          if (error.status === REQUEST_TIMEOUT) {
+            return reject(error);
+          }
+
+          return resolve(error);
+        });
+    });
   }
 }

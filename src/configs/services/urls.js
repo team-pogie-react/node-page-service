@@ -11,6 +11,7 @@ export default {
   CONTENT_2: '/v1.0/Content2/',
   ACCOUNTS: '/MyAccount/v1.0/',
   PAGE_TYPE: '/Page/v2.0/pageType',
+  REDIRECTOR: '/Redirector/v1.0/getRedirect',
   PAGE_HEADER: '/Seo/v1/header/byPageType/',
   SEARCH: '/Search/v2.0/',
   DETAILS: '/Product/v1.0/',

@@ -1,12 +1,14 @@
 import _ from 'lodash';
 import queryString from 'qs';
 import sequelize from 'sequelize';
+import md5 from 'md5';
 import CacheInstance from '../core/Cache';
 import SeoApiService from './SeoApiService';
 import TIMEOUTS from '../configs/timeouts';
 import { urls, cache } from '../configs/services';
 import PageTransformer from '../transformers/PageTransformer';
 import { consoler } from '../core/helpers';
+
 
 export default class Pagetype extends SeoApiService {
   /** @interitdoc */
@@ -29,22 +31,26 @@ export default class Pagetype extends SeoApiService {
    *
    * @returns {Object<Promise>}
    */
-  getData(uri, tid) {
+  getData(uri) {
+    // hash_code = md5(strtolower(rtrim($params['request_url'], "/")))
+    let redirectorUri;
+
+    redirectorUri = uri;
+    if (uri.charAt(uri.length) === '/') {
+      redirectorUri = redirectorUri.substr(uri.length);
+    }
+    redirectorUri = redirectorUri.toLowerCase();
+    redirectorUri = md5(redirectorUri);
     const params = {
       site: this.getDomain(),
-      request_url: uri,
-      tid,
+      hash_code: redirectorUri,
     };
-
-    if (/^\/details/.test(uri)) {
-      params.pdppla = 1;
-    }
 
     const query = queryString.stringify(params, { encodeValuesOnly: true });
     const cacheKey = `get_page_type_${this.cache.generateKey(JSON.stringify(params))}`;
 
     return this.cache.remember(cacheKey, cache.GET_PAGE_TYPE, () => this._get(
-      urls.PAGE_TYPE,
+      urls.REDIRECTOR,
       query,
       ['contents', 'attributes', 'page_type', 'status_code', 'request_url', 'redirect_url'],
       null,
@@ -53,22 +59,6 @@ export default class Pagetype extends SeoApiService {
       if (response.status_code !== 200) {
         return response;
       }
-
-      let articleHeading = '';
-
-      if (response.page_type === 'category') {
-        articleHeading = _.get(response, 'attributes.cat.category_name',
-          _.get(response, 'attributes.tlc.category_name', ''));
-      } else {
-        _(response.attributes).keys().each((key) => {
-          const nodeName = `${key}_name`;
-          const attrValue = _.get(response.attributes[key], nodeName, '');
-          articleHeading += `${attrValue} `;
-        });
-      }
-
-      _.set(response, 'articles.data', this.pageTransformer.transformArticles(response));
-      _.set(response, 'articles.header', `${articleHeading.trim()} Articles`);
 
       return response;
     }));
@@ -93,7 +83,7 @@ export default class Pagetype extends SeoApiService {
     _.forEach(serialPattern, (table) => {
       // consoler(table, data[i]);
       this.sequelize.query(`SELECT ${table}_name, ${table}_id FROM ${table}s WHERE ${table}_name = :data`,
-        { replacements: { data: data[i] }, type: sequelize.QueryTypes.SELECT },).then((result) => {
+        { replacements: { data: data[i] }, type: sequelize.QueryTypes.SELECT }).then((result) => {
         consoler('result', result);
       });
       i += 1;
