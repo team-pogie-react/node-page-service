@@ -43,6 +43,8 @@ export default class PagetypeController extends BaseController {
     try {
       const domain = self.getDomain(request);
       let uri = _.get(request, 'query.uri', '');
+
+      consoler('uri1', uri);
       const requestUri = _.get(request, 'query.uri', '');
       const tid = _.get(request, 'query.TID', _.get(request, 'query.tid'));
 
@@ -79,14 +81,13 @@ export default class PagetypeController extends BaseController {
       let redirectorData = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
-      if ( isFalsy(redirectorData) ) {
+      if (isFalsy(redirectorData)) {
         consoler('redirectorData', redirectorData);
         if (redirectorData.status === 'ACTIVE') {
           // TODO Transaform data from redirector to page service format
           return response.withData(redirectorData);
         }
       } else {
-
         consoler('redirectorData', 'not found');
       }
 
@@ -104,9 +105,15 @@ export default class PagetypeController extends BaseController {
       // check mapping value
 
       // get data from pldb
-      const attrib = this.pagetype.getAttributes(patternList, dimension);
+      const attributes = await Promise.all(this.pagetype.getAttributes(patternList, dimension))
+        .then(([...results]) => Promise.resolve({
+          results,
+        }));
 
-      consoler('attrib', attrib);
+      consoler('attrib', attributes);
+      if (attributes) {
+        result.attributes = attributes.results;
+      }
       result.request_uri = requestUri;
 
       return response.withData(result);
@@ -136,4 +143,5 @@ export default class PagetypeController extends BaseController {
         });
     });
   }
+  
 }

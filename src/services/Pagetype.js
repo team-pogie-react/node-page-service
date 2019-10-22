@@ -1,10 +1,8 @@
 import _ from 'lodash';
 import queryString from 'qs';
-import sequelize from 'sequelize';
 import md5 from 'md5';
+import Promise from 'bluebird';
 import CacheInstance from '../core/Cache';
-import DbInstance from '../core/Db';
-import Make from '../models/MakeModel';
 import SeoApiService from './SeoApiService';
 import TIMEOUTS from '../configs/timeouts';
 import { urls, cache } from '../configs/services';
@@ -12,19 +10,19 @@ import PageTransformer from '../transformers/PageTransformer';
 import { consoler } from '../core/helpers';
 
 
+const {
+  Makes, Models, Partnames, Brands, Category, TLC,
+} = require('../core/Db').default;
+
 export default class Pagetype extends SeoApiService {
   /** @interitdoc */
   constructor() {
     super();
 
     this.cache = CacheInstance;
-    this.db = DbInstance;
     this.pageTransformer = new PageTransformer();
-    this.sequelize = new sequelize('ProductLookupDb_merge_optimized', 'hydra', 'gh56vn', {
-      host: '10.10.75.236',
-      dialect: 'mysql',
-    });
   }
+
 
   /**
    * Get page data.
@@ -68,38 +66,83 @@ export default class Pagetype extends SeoApiService {
   }
 
 
-  getAttributes(patternList, data) {
-    let validAttirb;
+  async getAttributes(patternList, data) {
+    let serialPattern;
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < patternList.length; ++i) {
+      serialPattern = patternList[i].split('_');
 
-    _.forEach(patternList, (pattern) => {
-      const serialPattern = pattern.split('_');
-      //validAttirb = this.validatePattern(serialPattern, data);
-    });
+      // eslint-disable-next-line no-await-in-loop
+      const presult = await Promise.all(this.validatePattern(serialPattern, data))
+        .then(([...attributes]) => Promise.resolve({
+          attributes,
+        }));
+      consoler('presult', presult);
 
-    consoler('data', data);
+      return presult.attributes;
+    }
 
-    return validAttirb;
+    return false;
+    // consoler('serialPattern.length', serialPattern.length);
   }
 
-  validatePattern(serialPattern, data) {
+
+  async validatePattern(serialPattern, data) {
     let i = 0;
-    const model = new Make;
-    model.findOne({
-      where: { make_name: data[i] },
-      attributes: ['make_id', 'make_name'],
-    }).then((result) => {
-      consoler('db result:', result);
-    });
+    const attributes = [];
+    // const PR = [];
+
+    const modelMappings = {
+      makes: Makes,
+      models: Models,
+      partnames: Partnames,
+      brands: Brands,
+      category: Category,
+      toplevel: TLC,
+    };
+
+    const fieldMappings = {
+      makes: 'make_name',
+      models: 'model_name',
+      partnames: 'part_name',
+      brands: 'brand_name',
+      category: 'cat_name',
+      toplevel: 'tlc_name',
+    };
+
+    const promiseList = [];
+    const tablesList = [];
 
     _.forEach(serialPattern, (table) => {
-      // consoler(table, data[i]);
-      /* this.sequelize.query(`SELECT ${table}_name, ${table}_id FROM ${table}s WHERE ${table}_name = :data`,
-        { replacements: { data: data[i] }, type: sequelize.QueryTypes.SELECT }).then((result) => {
-        consoler('result', result);
-      }); */
+      tablesList.push(table);
 
-      consoler('table', table);
+      promiseList.push(modelMappings[table].findOne({
+        where: { [fieldMappings[table]]: data[i] },
+      }));
       i += 1;
     });
+
+    try {
+      const presult = await Promise.all(promiseList)
+        .then(([...presults]) => Promise.resolve({
+          presults,
+        }));
+
+      _.forEach(presult.presults, (dbres) => {
+        if (dbres && dbres.dataValues) {
+          attributes.push(dbres.dataValues);
+        }
+      });
+
+      if (serialPattern.length === attributes.length) {
+        return attributes;
+      }
+
+      return false;
+    } catch (error) {
+      consoler('ERROR', error);
+
+      return error;
+    }
   }
 }// end class
