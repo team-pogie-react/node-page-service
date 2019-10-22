@@ -79,16 +79,19 @@ export default class PagetypeController extends BaseController {
       // check if exist on redirector
       // we will use the `uri` variable so the / on the first
       let redirectorData = {};
+      let rdrResults = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
-      if (isFalsy(redirectorData)) {
+      // work with other statuses like redirect
+      if (redirectorData && redirectorData.status === 'ACTIVE') {
         consoler('redirectorData', redirectorData);
-        if (redirectorData.status === 'ACTIVE') {
-          // TODO Transaform data from redirector to page service format
-          return response.withData(redirectorData);
-        }
-      } else {
-        consoler('redirectorData', 'not found');
+        rdrResults.status_code = redirectorData.status_code;
+        rdrResults.page_type = redirectorData.page_type;
+        rdrResults.request_url = requestUri;
+        rdrResults.attributes = redirectorData.attributes;
+        rdrResults.site = domain;
+
+        return response.withData(rdrResults);
       }
 
       // count the dimension
