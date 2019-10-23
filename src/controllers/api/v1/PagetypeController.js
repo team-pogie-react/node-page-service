@@ -79,7 +79,7 @@ export default class PagetypeController extends BaseController {
       // check if exist on redirector
       // we will use the `uri` variable so the / on the first
       let redirectorData = {};
-      let rdrResults = {};
+      const rdrResults = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
       // work with other statuses like redirect
@@ -103,6 +103,7 @@ export default class PagetypeController extends BaseController {
       }
 
       const dimensionCount = dimension.length;
+      consoler('dimensionCount', dimensionCount);
 
       const patternList = self.config[`${converter.toWords(dimensionCount)}_dimension`];
       // check mapping value
@@ -114,8 +115,19 @@ export default class PagetypeController extends BaseController {
         }));
 
       consoler('attrib', attributes);
-      if (attributes) {
+      if (attributes.results && attributes.results.length > 0) {
+        result.status_code = 200;
+        result.site = domain;
+        result.page_type = 'ymmse_sku';
         result.attributes = attributes.results;
+      } else {
+        const error = {};
+        error.message = 'Data Not Found';
+        error.custom_code = 121;
+        error.status_code = 404;
+        result.error = error;
+
+        return response.withData(result);
       }
       result.request_uri = requestUri;
 
@@ -146,5 +158,4 @@ export default class PagetypeController extends BaseController {
         });
     });
   }
-  
 }

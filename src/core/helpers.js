@@ -63,6 +63,7 @@ export function decode(text = '') {
   src = src.replace(/-closep-/g, ')');
   src = src.replace(/-plus-/g, '+');
   src = src.replace(/-semi-/g, ';');
+  src = src.replace(/\.html/g, '');
 
   // this should come last as other substitutions might have unnecessary space.
   src = src.replace(/_/g, ' ');
@@ -118,7 +119,7 @@ export function seoEncode(content = '') {
   str = str.replace(/\/details/g, '');
   str = str.replace(/ & /g, '-and-');
   str = str.replace(/&/g, '-and-');
-  str = str.replace(/_/g, '-');
+  str = str.replace(/_/g, ' ');
   str = str.replace(/ /g, '-');
   str = str.replace(/\./g, '');
   str = str.replace(/\\'/g, '');
@@ -402,10 +403,10 @@ export function encodeToVLP(str) {
 export function isAlphaNumeric(str) {
   let i = 0;
   let len = 0;
-  for (i = 0, len = str.length; i < len; i++) {
+  for (i = 0, len = str.length; i < len; i += 1) {
     const code = str.charCodeAt(i);
     const schar = [45, 95, 47, 32]; // '-','_','/'
-     console.log('code',code);
+    // console.log('code',code);
     if (!(code >= 48 && code <= 57) // numeric (0-9)
         && !(code >= 65 && code <= 90) // upper alpha (A-Z)
         && !(code >= 97 && code <= 122) // lower alpha (a-z)
@@ -423,8 +424,20 @@ export function isAlphaNumeric(str) {
  */
 export function consoler(label, value) {
   // eslint-disable-next-line no-console
-  console.log('\n###CONSOLE LOGGER >> ' + label + ': ', value);
+  console.log(`\n###CONSOLE LOGGER >> ${label}: `, value);
   console.log('\n');
 
   return true;
+}
+
+export function engineDecode(str) {
+  const engineData = str.split('Cyl');
+  let i = 0;
+  let len = 0;
+  const engine = [];
+  for (i = 0, len = engineData.length; i < len; i += 1) {
+    engine[i] = decode(engineData[i]).replace('L', '').trim();
+  }
+
+  return engine;
 }

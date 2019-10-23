@@ -6,6 +6,12 @@ import brandModel from '../models/BrandsModel';
 import categoryModel from '../models/CategoryModel';
 import tlcModel from '../models/ToplevelcategoryModel';
 
+
+import enginesModel from '../models/EnginesModel';
+import submodelsModel from '../models/SubmodelsModel';
+import yearModel from '../models/YearsModel';
+import productsModel from '../models/ProductsModel';
+
 const sequelize = new Sequelize('ProductLookupDb_merge_optimized', 'hydra', 'gh56vn', {
   host: '10.10.75.236',
   dialect: 'mysql',
@@ -26,7 +32,11 @@ const Models = modelModel(sequelize, Sequelize);
 const Partnames = partnameModel(sequelize, Sequelize);
 const Brands = brandModel(sequelize, Sequelize);
 const Category = categoryModel(sequelize, Sequelize);
-const TLC = tlcModel(sequelize, Sequelize);
+const Toplevel = tlcModel(sequelize, Sequelize);
+const Engines = enginesModel(sequelize, Sequelize);
+const Submodels = submodelsModel(sequelize, Sequelize);
+const Sku = productsModel(sequelize, Sequelize);
+const Years = yearModel(sequelize, Sequelize);
 // BlogTag will be our way of tracking relationship between Blog and Tag models
 // each Blog can have multiple tags and each Tag can have multiple blogs
 /* const BlogTag = sequelize.define('blog_tag', {})
@@ -48,5 +58,9 @@ export default {
   Partnames,
   Brands,
   Category,
-  TLC,
+  Toplevel,
+  Engines,
+  Submodels,
+  Sku,
+  Years,
 };

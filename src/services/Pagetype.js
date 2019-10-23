@@ -7,11 +7,14 @@ import SeoApiService from './SeoApiService';
 import TIMEOUTS from '../configs/timeouts';
 import { urls, cache } from '../configs/services';
 import PageTransformer from '../transformers/PageTransformer';
-import { consoler } from '../core/helpers';
+import {
+  consoler, decode, engineDecode, seoEncode,
+} from '../core/helpers';
 
 
 const {
-  Makes, Models, Partnames, Brands, Category, TLC,
+  Makes, Models, Partnames, Brands, Category, Toplevel,
+  Engines, Submodels, Sku, Years,
 } = require('../core/Db').default;
 
 export default class Pagetype extends SeoApiService {
@@ -68,26 +71,36 @@ export default class Pagetype extends SeoApiService {
 
   async getAttributes(patternList, data) {
     let serialPattern;
+
+
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < patternList.length; ++i) {
       serialPattern = patternList[i].split('_');
 
-      // eslint-disable-next-line no-await-in-loop
-      const presult = await Promise.all(this.validatePattern(serialPattern, data))
-        .then(([...attributes]) => Promise.resolve({
-          attributes,
-        }));
-      consoler('presult', presult);
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const presult = await Promise.all(this.validatePattern(serialPattern, data))
+          .then(([...attributes]) => Promise.resolve({
+            attributes,
+          }));
+        consoler('presult', presult);
+        if (presult) {
+          return presult.attributes;
+        }
+      } catch (error) {
+        consoler('presult ERROR on ', error);
 
-      return presult.attributes;
+        return error;
+      }
     }
 
-    return false;
-    // consoler('serialPattern.length', serialPattern.length);
+    return [];
   }
 
 
   async validatePattern(serialPattern, data) {
+    consoler('serialPattern', serialPattern);
+
     let i = 0;
     const attributes = [];
     // const PR = [];
@@ -98,7 +111,11 @@ export default class Pagetype extends SeoApiService {
       partnames: Partnames,
       brands: Brands,
       category: Category,
-      toplevel: TLC,
+      toplevel: Toplevel,
+      engines: Engines,
+      submodels: Submodels,
+      sku: Sku,
+      years: Years,
     };
 
     const fieldMappings = {
@@ -108,17 +125,40 @@ export default class Pagetype extends SeoApiService {
       brands: 'brand_name',
       category: 'cat_name',
       toplevel: 'tlc_name',
+      engines: 'cylinders',
+      submodels: 'submodel_name',
+      sku: 'sku',
+      years: 'year',
     };
 
     const promiseList = [];
     const tablesList = [];
-
+    let engineData = [];
     _.forEach(serialPattern, (table) => {
       tablesList.push(table);
 
-      promiseList.push(modelMappings[table].findOne({
-        where: { [fieldMappings[table]]: data[i] },
-      }));
+      switch (table) {
+        case 'engines':
+          engineData = engineDecode(data[i]);
+          if (engineData.length === 2) {
+            promiseList.push(modelMappings[table].findOne({
+              where: { cylinders: engineData[0], liter: engineData[1] },
+            }));
+          }
+          break;
+
+        case 'sku':
+          promiseList.push(modelMappings[table].findOne({
+            where: { [fieldMappings[table]]: decode(data[i]) },
+          }));
+          break;
+
+        default:  
+          promiseList.push(modelMappings[table].findOne({
+            where: { [fieldMappings[table]]: decode(data[i]) },
+          }));
+      }
+
       i += 1;
     });
 
@@ -127,9 +167,8 @@ export default class Pagetype extends SeoApiService {
         .then(([...presults]) => Promise.resolve({
           presults,
         }));
-
       _.forEach(presult.presults, (dbres) => {
-        if (dbres && dbres.dataValues) {
+        if (dbres && dbres !== null && dbres.dataValues) {
           attributes.push(dbres.dataValues);
         }
       });
@@ -138,9 +177,9 @@ export default class Pagetype extends SeoApiService {
         return attributes;
       }
 
-      return false;
+      return [];
     } catch (error) {
-      consoler('ERROR', error);
+      consoler('ERROR on ', error);
 
       return error;
     }
