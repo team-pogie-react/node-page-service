@@ -6,9 +6,10 @@ import Content from '../../../services/Content';
 import Pagetype from '../../../services/Pagetype';
 import Seo from '../../../services/Seo';
 import Config from '../../../configs/services/pages';
+import ConfigPagetypes from '../../../configs/services/pagetypes';
 
 import BaseController from '../BaseController';
-import { isAlphaNumeric, consoler, isFalsy } from '../../../core/helpers';
+import { isAlphaNumeric, consoler } from '../../../core/helpers';
 import Videos from '../../../services/Videos';
 import StructuredData from '../../../services/StructuredData';
 import CacheInstance from '../../../core/Cache';
@@ -83,7 +84,7 @@ export default class PagetypeController extends BaseController {
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
       // work with other statuses like redirect
-      if (redirectorData && redirectorData.status === 'ACTIVE') {
+      if (redirectorData && redirectorData.status === 'ACTIVEX') {
         consoler('redirectorData', redirectorData);
         rdrResults.status_code = redirectorData.status_code;
         rdrResults.page_type = redirectorData.page_type;
@@ -109,17 +110,15 @@ export default class PagetypeController extends BaseController {
       // check mapping value
 
       // get data from pldb
-      const attributes = await Promise.all(this.pagetype.getAttributes(patternList, dimension))
-        .then(([...results]) => Promise.resolve({
-          results,
-        }));
+      const attributes = await this.pagetype.getAttributes(patternList, dimension);
 
-      consoler('attrib', attributes);
-      if (attributes.results && attributes.results.length > 0) {
+
+      consoler('attributes', attributes);
+      if (attributes && attributes.attributes && attributes.attributes.length > 0) {
         result.status_code = 200;
         result.site = domain;
-        result.page_type = 'ymmse_sku';
-        result.attributes = attributes.results;
+        result.page_type = ConfigPagetypes[attributes.serialPattern];
+        result.attributes = attributes.attributes;
       } else {
         const error = {};
         error.message = 'Data Not Found';
@@ -133,6 +132,7 @@ export default class PagetypeController extends BaseController {
 
       return response.withData(result);
     } catch (error) {
+      console.log(error);
       return response.withError(error.message, error.status, error.code);
     }
   }

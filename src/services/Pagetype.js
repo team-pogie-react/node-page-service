@@ -71,7 +71,7 @@ export default class Pagetype extends SeoApiService {
 
   async getAttributes(patternList, data) {
     let serialPattern;
-
+    const presponse = [];
 
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < patternList.length; ++i) {
@@ -83,9 +83,14 @@ export default class Pagetype extends SeoApiService {
           .then(([...attributes]) => Promise.resolve({
             attributes,
           }));
-        consoler('presult', presult);
-        if (presult) {
-          return presult.attributes;
+
+        if (presult && presult.attributes && presult.attributes.length > 0) {
+          presult.serialPattern = patternList[i];
+          presponse.serialPattern = presult.serialPattern;
+          presponse.attributes = presult.attributes;
+          consoler('presponse', presponse);
+
+          return presult;
         }
       } catch (error) {
         consoler('presult ERROR on ', error);
@@ -103,7 +108,6 @@ export default class Pagetype extends SeoApiService {
 
     let i = 0;
     const attributes = [];
-    // const PR = [];
 
     const modelMappings = {
       makes: Makes,
@@ -173,7 +177,9 @@ export default class Pagetype extends SeoApiService {
         }
       });
 
-      if (serialPattern.length === attributes.length) {
+      if (serialPattern.length === attributes.length) { 
+        consoler('validatePattern',attributes);
+
         return attributes;
       }
 
