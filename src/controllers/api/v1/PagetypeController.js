@@ -130,9 +130,16 @@ export default class PagetypeController extends BaseController {
       }
       result.request_uri = requestUri;
 
+      // get the pimcore data from
+      // sample: https://api2-staging.usautoparts.com/Contents/v1.0/getcontents?source=doc&path=/carparts.com/make/ford&apikey=anzhbnJvaXVz
+
+      // if no pimcore data try getting some from
+      // catalog: https://api3-staging.usautoparts.com/v1.0/Catalog2/?apikey=anzhbnJvaXVz&op=getProducts&data={"catalogSource":"Endeca","pipeDelimited":"0","site":"carparts.com","make":"Dodge","model":"Durango","part":"Door+Handle"}&format=printr
+
       return response.withData(result);
     } catch (error) {
-      console.log(error);
+      consoler('error', error);
+
       return response.withError(error.message, error.status, error.code);
     }
   }

@@ -157,7 +157,7 @@ export default class Pagetype extends SeoApiService {
           }));
           break;
 
-        default:  
+        default:
           promiseList.push(modelMappings[table].findOne({
             where: { [fieldMappings[table]]: decode(data[i]) },
           }));
@@ -173,12 +173,14 @@ export default class Pagetype extends SeoApiService {
         }));
       _.forEach(presult.presults, (dbres) => {
         if (dbres && dbres !== null && dbres.dataValues) {
+          consoler('dbres', dbres._modelOptions.name.plural);
+
           attributes.push(dbres.dataValues);
         }
       });
 
-      if (serialPattern.length === attributes.length) { 
-        consoler('validatePattern',attributes);
+      if (serialPattern.length === attributes.length) {
+        consoler('validatePattern', attributes);
 
         return attributes;
       }
