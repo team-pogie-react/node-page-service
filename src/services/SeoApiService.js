@@ -28,8 +28,8 @@ export default class SeoApiService extends ApiService {
    */
   _extractResult(response, resultKey) {
     const { data } = response;
-
-    if ('results' in data && 'status_code' in data.results) {
+    
+    if ('results' in data && ('status_code' in data.results  ||  'success' in data.results) ) {
       return this._extractPageResults(data, resultKey);
     }
 
@@ -40,7 +40,7 @@ export default class SeoApiService extends ApiService {
       return new ApiError(message, code);
     }
 
-    if (typeof data.results === 'undefined' && !data._payload) {
+    if (typeof data.results !== 'undefined' && !data._payload) {
       return new ApiError('Payload is empty please check the parameters.');
     }
 

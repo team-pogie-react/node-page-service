@@ -8,7 +8,7 @@ import TIMEOUTS from '../configs/timeouts';
 import { urls, cache } from '../configs/services';
 import PageTransformer from '../transformers/PageTransformer';
 import {
-  consoler, decode, engineDecode, seoEncode,
+  consoler, decode, engineDecode,
 } from '../core/helpers';
 
 
@@ -35,7 +35,7 @@ export default class Pagetype extends SeoApiService {
    *
    * @returns {Object<Promise>}
    */
-  getData(uri) {
+  getRedirectorData(uri) {
     // hash_code = md5(strtolower(rtrim($params['request_url'], "/")))
     let redirectorUri;
 
@@ -61,6 +61,43 @@ export default class Pagetype extends SeoApiService {
       TIMEOUTS.SEO_NEXUS,
     ).then((response) => {
       if (response.status_code !== 200) {
+        return response;
+      }
+
+      return response;
+    }));
+  }
+
+
+  /**
+   * Get page data.
+   *
+   * @param {String} uri
+   * @param {String} tid
+   *
+   * @returns {Object<Promise>}
+   */
+  getPimcoreData(uri) {
+    // sample: http://api3ns-staging.usautoparts.com/Contents/v1.0/getcontents?source=doc&path=/carparts.com/make/ford&apikey=anzhbnJvaXVz
+
+    const params = {
+      source: 'doc',
+      path: uri,
+      apikey: 'anzhbnJvaXVz',
+    };
+    
+    const query = queryString.stringify(params, { encodeValuesOnly: false });
+    const cacheKey = `get_page_type_${this.cache.generateKey(JSON.stringify(params))}`;
+
+    return this.cache.remember(cacheKey, cache.GET_PAGE_TYPE, () => this._get(
+      urls.SEO_CONTENTS,
+      query,
+      ['contents', 'attributes', 'page_type', 'status_code', 'request_url', 'redirect_url'],
+      null,
+      TIMEOUTS.SEO_NEXUS,
+    ).then((response) => {
+      consoler(' getPimcoreData response', response);
+      if (response.success) {
         return response;
       }
 

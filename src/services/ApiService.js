@@ -153,7 +153,11 @@ export default class ApiService {
 
           return resolve(data);
         })
-        .catch(error => reject(makeHttpClientError(error)));
+        .catch(error => {
+          console.log(error);
+          
+          return reject(makeHttpClientError(error));
+        });
     });
   }
 

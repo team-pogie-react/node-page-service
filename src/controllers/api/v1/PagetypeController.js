@@ -119,6 +119,11 @@ export default class PagetypeController extends BaseController {
         result.site = domain;
         result.page_type = ConfigPagetypes[attributes.serialPattern];
         result.attributes = attributes.attributes;
+
+        // get the pimcore data from catalog2
+        let pimcoreData = {};
+        pimcoreData = await self._getPimcoreData(domain, `/${domain}/${result.page_type}/${uri}`);
+        result.contents = pimcoreData.data;
       } else {
         const error = {};
         error.message = 'Data Not Found';
@@ -129,9 +134,6 @@ export default class PagetypeController extends BaseController {
         return response.withData(result);
       }
       result.request_uri = requestUri;
-
-      // get the pimcore data from
-      // sample: https://api2-staging.usautoparts.com/Contents/v1.0/getcontents?source=doc&path=/carparts.com/make/ford&apikey=anzhbnJvaXVz
 
       // if no pimcore data try getting some from
       // catalog: https://api3-staging.usautoparts.com/v1.0/Catalog2/?apikey=anzhbnJvaXVz&op=getProducts&data={"catalogSource":"Endeca","pipeDelimited":"0","site":"carparts.com","make":"Dodge","model":"Durango","part":"Door+Handle"}&format=printr
@@ -145,7 +147,7 @@ export default class PagetypeController extends BaseController {
   }
 
   /**
-   * Aggregate service calls for home page.
+   * Aggregate service calls for REDIRECTOR page.
    *
    * @param {String} domain
    * @param {String} uri
@@ -154,7 +156,30 @@ export default class PagetypeController extends BaseController {
    */
   _getRedirectorData(domain, uri) {
     return new Promise((resolve, reject) => {
-      this.pagetype.setDomain(domain).getData(uri)
+      this.pagetype.setDomain(domain).getRedirectorData(uri)
+        .then(data => resolve(data))
+        .catch((error) => {
+          if (error.status === REQUEST_TIMEOUT) {
+            return reject(error);
+          }
+
+          return resolve(error);
+        });
+    });
+  }
+
+
+  /**
+   * Aggregate service calls for PIMCORE page.
+   *
+   * @param {String} domain
+   * @param {String} uri
+   *
+   * @return {Promise<Object>}
+   */
+  _getPimcoreData(domain, uri) {
+    return new Promise((resolve, reject) => {
+      this.pagetype.setDomain(domain).getPimcoreData(uri)
         .then(data => resolve(data))
         .catch((error) => {
           if (error.status === REQUEST_TIMEOUT) {
