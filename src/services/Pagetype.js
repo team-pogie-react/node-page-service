@@ -85,7 +85,7 @@ export default class Pagetype extends SeoApiService {
       path: uri,
       apikey: 'anzhbnJvaXVz',
     };
-    
+
     const query = queryString.stringify(params, { encodeValuesOnly: false });
     const cacheKey = `get_page_type_${this.cache.generateKey(JSON.stringify(params))}`;
 
@@ -96,8 +96,9 @@ export default class Pagetype extends SeoApiService {
       null,
       TIMEOUTS.SEO_NEXUS,
     ).then((response) => {
-      consoler(' getPimcoreData response', response);
       if (response.success) {
+        consoler(' getPimcoreData response', response);
+
         return response;
       }
 
@@ -105,6 +106,62 @@ export default class Pagetype extends SeoApiService {
     }));
   }
 
+  /**
+   * Get page data.
+   *
+   * @param {String} uri
+   * @param {String} tid
+   *
+   * @returns {Object<Promise>}
+   */
+  getCatalogData(uri) {
+    // catalog: https://api3-staging.usautoparts.com/v1.0/Catalog2/?apikey=anzhbnJvaXVz&op=getProducts&data={"catalogSource":"Endeca","pipeDelimited":"0","site":"carparts.com","brand":"Replacement","part":"Bumper"}
+
+    // catalog: http://api3ns-staging.usautoparts.com/v1.0/Catalog2/?op=getProducts&data[catalogSource]=Endeca&data[pipeDelimited]=0&data[site]=carparts.com&data[brand]=Replacement&data[part]=Bumper&apikey=anzhbnJvaXVz
+
+    const uriParam = [];
+
+    _.forEach(uri, (data) => {
+      let i = 0;
+      _.forEach(data, (values, key) => {
+        if (i === 1) {
+          const keyVar = key.replace('_name', '');
+          uriParam[keyVar] = values;
+        }
+        i += 1;
+      });
+    });
+
+    const dataParam = {
+      catalogSource: 'Endeca',
+      pipeDelimited: '0',
+      site: this.getDomain(),
+      ...uriParam,
+    };
+
+    const params = {
+      op: 'getProducts',
+      data: dataParam,
+      apikey: 'anzhbnJvaXVz',
+    };
+    consoler('params', params);
+    const query = queryString.stringify(params, { encodeValuesOnly: false });
+    const cacheKey = `get_page_type_${this.cache.generateKey(JSON.stringify(params))}`;
+
+    return this._get(
+      urls.CATALOG_2,
+      query,
+      ['contents', 'attributes', 'page_type', 'status_code', 'request_url', 'redirect_url'],
+      null,
+      TIMEOUTS.SEO_NEXUS,
+    ).then((response) => {
+      if (response.getProducts && response.getProducts.value) {
+        return response.getProducts.value.MetaInfo['Total Number of Matching Records'];
+      }
+
+      return response;
+    });
+  }
 
   async getAttributes(patternList, data) {
     let serialPattern;

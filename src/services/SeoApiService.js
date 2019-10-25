@@ -28,8 +28,7 @@ export default class SeoApiService extends ApiService {
    */
   _extractResult(response, resultKey) {
     const { data } = response;
-    
-    if ('results' in data && ('status_code' in data.results  ||  'success' in data.results) ) {
+    if (data.results  && (data.results.status_code || data.results.success)) {
       return this._extractPageResults(data, resultKey);
     }
 
@@ -48,7 +47,6 @@ export default class SeoApiService extends ApiService {
 
     if (resultKey instanceof Array) {
       const res = data._payload.result;
-
       _.each(resultKey, (item) => {
         if (item in res) {
           if (res[item] in errors) {
@@ -57,6 +55,8 @@ export default class SeoApiService extends ApiService {
           } else {
             result[item] = res[item];
           }
+        } else {
+          result = res;
         }
       });
 

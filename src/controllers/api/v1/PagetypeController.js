@@ -118,12 +118,19 @@ export default class PagetypeController extends BaseController {
         result.status_code = 200;
         result.site = domain;
         result.page_type = ConfigPagetypes[attributes.serialPattern];
+        result.request_uri = requestUri;
         result.attributes = attributes.attributes;
 
         // get the pimcore data from catalog2
         let pimcoreData = {};
         pimcoreData = await self._getPimcoreData(domain, `/${domain}/${result.page_type}/${uri}`);
-        result.contents = pimcoreData.data;
+        if (pimcoreData && pimcoreData.data) {
+          result.contents = pimcoreData.data;
+        } else {
+          // if no pimcore data try getting some from Content
+
+          
+        }
       } else {
         const error = {};
         error.message = 'Data Not Found';
@@ -133,10 +140,14 @@ export default class PagetypeController extends BaseController {
 
         return response.withData(result);
       }
-      result.request_uri = requestUri;
 
-      // if no pimcore data try getting some from
-      // catalog: https://api3-staging.usautoparts.com/v1.0/Catalog2/?apikey=anzhbnJvaXVz&op=getProducts&data={"catalogSource":"Endeca","pipeDelimited":"0","site":"carparts.com","make":"Dodge","model":"Durango","part":"Door+Handle"}&format=printr
+      // get the pimcore data from catalogData
+      let catalogData = {};
+      catalogData = await self._getCatalogData(domain, result.attributes);
+      consoler('data catalogData', catalogData);
+      if (catalogData) {
+        result.products = catalogData;
+      }
 
       return response.withData(result);
     } catch (error) {
@@ -190,4 +201,27 @@ export default class PagetypeController extends BaseController {
         });
     });
   }
+
+  /**
+   * Aggregate service calls for PIMCORE page.
+   *
+   * @param {String} domain
+   * @param {String} uri
+   *
+   * @return {Promise<Object>}
+   */
+  _getCatalogData(domain, uri) {
+    return new Promise((resolve, reject) => {
+      this.pagetype.setDomain(domain).getCatalogData(uri)
+        .then(data => resolve(data))
+        .catch((error) => {
+          if (error.status === REQUEST_TIMEOUT) {
+            return reject(error);
+          }
+
+          return resolve(error);
+        });
+    });
+  }
+
 }
