@@ -45,9 +45,7 @@ export default class PagetypeController extends BaseController {
       const domain = self.getDomain(request);
       let uri = _.get(request, 'query.uri', '');
 
-      consoler('uri1', uri);
       const requestUri = _.get(request, 'query.uri', '');
-      const tid = _.get(request, 'query.TID', _.get(request, 'query.tid'));
 
       if (_.isEmpty(uri)) {
         return response.withError('Missing URI parameter', 400);
@@ -83,8 +81,9 @@ export default class PagetypeController extends BaseController {
       const rdrResults = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
-      // work with other statuses like redirect
-      if (redirectorData && redirectorData.status === 'ACTIVEX') {
+
+      // TODO work with other statuses like redirect
+      if (redirectorData && redirectorData.status === 'ACTIVE') {
         consoler('redirectorData', redirectorData);
         rdrResults.status_code = redirectorData.status_code;
         rdrResults.page_type = redirectorData.page_type;
@@ -92,7 +91,21 @@ export default class PagetypeController extends BaseController {
         rdrResults.attributes = redirectorData.attributes;
         rdrResults.site = domain;
 
-        return response.withData(rdrResults);
+        // return response.withData(rdrResults);
+      } else if (redirectorData && redirectorData.status === 'REDIRECT') {
+        rdrResults.status_code = redirectorData.status_code;
+        rdrResults.redirect_url = redirectorData.redirect_url;
+        rdrResults.request_url = requestUri;
+        rdrResults.site = domain;
+        rdrResults.append = 1;
+      } else if (redirectorData && redirectorData.status === 'KILL') {
+        rdrResults.status_code = redirectorData.status_code;
+        rdrResults.redirect_url = redirectorData.redirect_url;
+        rdrResults.request_url = requestUri;
+        rdrResults.site = domain;
+        rdrResults.append = 1;
+      } else {
+        // do nothing
       }
 
       // count the dimension
@@ -129,7 +142,7 @@ export default class PagetypeController extends BaseController {
         } else {
           // if no pimcore data try getting some from Content
 
-          
+
         }
       } else {
         const error = {};
@@ -141,7 +154,7 @@ export default class PagetypeController extends BaseController {
         return response.withData(result);
       }
 
-      // get the pimcore data from catalogData
+      // check from catalog / unbxd if there's a product
       let catalogData = {};
       catalogData = await self._getCatalogData(domain, result.attributes);
       consoler('data catalogData', catalogData);
@@ -223,5 +236,4 @@ export default class PagetypeController extends BaseController {
         });
     });
   }
-
 }

@@ -53,17 +53,121 @@ export function encode(text = '') {
  */
 export function decode(text = '') {
   let src = text.trim();
-
-  src = src.replace(/-and-/g, '&');
-  src = src.replace(/-comma-/g, ',');
-  src = src.replace(/-dot-/g, '.');
-  src = src.replace(/-fs-/g, '/');
-  src = src.replace(/-qt-/g, '"');
-  src = src.replace(/-openp-/g, '(');
-  src = src.replace(/-closep-/g, ')');
-  src = src.replace(/-plus-/g, '+');
-  src = src.replace(/-semi-/g, ';');
+  src = src.replace(/(\/l-r\/)/g, '/l-and-r/');
+  src = src.replace(/(\/l-r$)/g, '/l-and-r');
+  src = src.replace(/(\/t-h\/)/g, '/t-and-h/');
+  src = src.replace(/(\/t-h$)/g, '/t-and-h');
+  src = src.replace(/(\/b-g\/)/g, '/b-and-g/');
+  src = src.replace(/(\/b-g$)/g, '/b-and-g');
+  src = src.replace(/(\/b-m\/)/g, '/b-and-m/');
+  src = src.replace(/(\/b-m$)/g, '/b-and-m');
+  src = src.replace(/(\/k-n\/)/g, '/k-and-n/');
+  src = src.replace(/(\/k-n$)/g, '/k-and-n');
+  src = src.replace(/(\/j-l\/)/g, '/j-and-l/');
+  src = src.replace(/(\/j-l$)/g, '/j-and-l');
+  src = src.replace(/-fs-/g, '-');
+  src = src.replace(/-dot-/g, '');
+  src = src.replace(/-qt-/g, '');
+  src = src.replace(/--and--/g, '-and-');
+  src = src.replace(/-comma-/g, '');
+  src = src.replace(/-openp-/g, '');
+  src = src.replace(/-closep-/g, '');
   src = src.replace(/\.html/g, '');
+  src = src.replace(/\/details/g, '');
+  src = src.replace(/_/g, '-');
+  src = src.replace(/ /g, '-');
+  src = src.replace(/\'/g, '');
+  src = src.replace(/,/g, '');
+  src = src.replace(/\(/g, '');
+  src = src.replace(/\)/g, '');
+  src = src.replace(/(\/a---b\/)/g, '/a-and-b/');
+  src = src.replace(/(\/a---b$)/g, '/a-and-b');
+  src = src.replace(/(\/apauro-parts\/)/g, '/apa-uro-parts/');
+  src = src.replace(/(\/apauro-parts$)/g, '/apa-uro-parts');
+  src = src.replace(/(\/candm-hydraulics\/)/g, '/c-and-m-hydraulics/');
+  src = src.replace(/(\/candm-hydraulics$)/g, '/c-and-m-hydraulics');
+  src = src.replace(/(\/pop---lock\/)/g, '/pop-and-lock/');
+  src = src.replace(/(\/pop---lock$)/g, '/pop-and-lock');
+  src = src.replace(/(\/vaip---vision-lighting\/)/g, '/vaip-vision-lighting/');
+  src = src.replace(/(\/vaip---vision-lighting$)/g, '/vaip-vision-lighting');
+  src = src.replace(/(\/perf-accessories\/)/g, '/performance-accessories/');
+  src = src.replace(/(\/perf-accessories$)/g, '/performance-accessories');
+  src = src.replace(/(\/a.e.-auto-parts\/)/g, '/ae-auto-parts/');
+  src = src.replace(/(\/a.e.-auto-parts$)/g, '/ae-auto-parts');
+  src = src.replace(/(\/nrf-b.v.\/)/g, '/nrf-bv/');
+  src = src.replace(/(\/nrf-b.v.$)/g, '/nrf-bv');
+  src = src.replace(/(\/classic---performance\/)/g, '/classic-and-performance/');
+  src = src.replace(/(\/classic---performance$)/g, '/classic-and-performance');
+  src = src.replace(/(\/c-m-hydraulics\/)/g, '/c-and-m-hydraulics/');
+  src = src.replace(/(\/c-m-hydraulics$)/g, '/c-and-m-hydraulics');
+  src = src.replace(/(\/fischer---plath\/)/g, '/fischer-and-plath/');
+  src = src.replace(/(\/fischer---plath$)/g, '/fischer-and-plath');
+  src = src.replace(/(\/hjs---leistritz\/)/g, '/hjs-leistritz/');
+  src = src.replace(/(\/hjs---leistritz$)/g, '/hjs-leistritz');
+  src = src.replace(/(\/fuel-injection-corp.\/)/g, '/fuel-injection-corp/');
+  src = src.replace(/(\/fuel-injection-corp.$)/g, '/fuel-injection-corp');
+  src = src.replace(/(\/atlantic-automotive-ent.\/)/g, '/atlantic-automotive-ent/');
+  src = src.replace(/(\/atlantic-automotive-ent.$)/g, '/atlantic-automotive-ent');
+  src = src.replace(/(\/osaka-bane-inc.\/)/g, '/osaka-bane-inc/');
+  src = src.replace(/(\/osaka-bane-inc.$)/g, '/osaka-bane-inc');
+  src = src.replace(/(\/a.i.m.\/)/g, '/aim/');
+  src = src.replace(/(\/a.i.m.$)/g, '/aim');
+  src = src.replace(/(\/weld-street---strip\/)/g, '/weld-street-and-strip/');
+  src = src.replace(/(\/weld-street---strip$)/g, '/weld-street-and-strip');
+  src = src.replace(/(\/laengerer---reich\/)/g, '/laengerer-and-reich/');
+  src = src.replace(/(\/laengerer---reich$)/g, '/laengerer-and-reich');
+  src = src.replace(/(\/yukon-gear---axle\/)/g, '/yukon-gear-and-axle/');
+  src = src.replace(/(\/yukon-gear---axle$)/g, '/yukon-gear-and-axle');
+  src = src.replace(/(\/miller---norburn\/)/g, '/miller-and-norburn/');
+  src = src.replace(/(\/miller---norburn$)/g, '/miller-and-norburn');
+  src = src.replace(/(\/f450\/)/g, '/f-450/');
+  src = src.replace(/(\/f450$)/g, '/f-450');
+  src = src.replace(/(\/f350\/)/g, '/f-350/');
+  src = src.replace(/(\/f350$)/g, '/f-350');
+  src = src.replace(/(\/ford\/e250\/)/g, '/ford/e-250/');
+  src = src.replace(/(\/ford\/e250$)/g, '/ford/e-250');
+  src = src.replace(/(\/ford\/e350\/)/g, '/ford/e-350/');
+  src = src.replace(/(\/ford\/e350$)/g, '/ford/e-350');
+  src = src.replace(/(\/ford\/e450\/)/g, '/ford/e-450/');
+  src = src.replace(/(\/ford\/e450$)/g, '/ford/e-450');
+  src = src.replace(/(\/jaguar\/3.8\/)/g, '/jaguar/38/');
+  src = src.replace(/(\/jaguar\/3.8$)/g, '/jaguar/38');
+  src = src.replace(/(\/jaguar\/3.4\/)/g, '/jaguar/34/');
+  src = src.replace(/(\/jaguar\/3.4$)/g, '/jaguar/34');
+  src = src.replace(/(\/jaguar\/3.2\/)/g, '/jaguar/32/');
+  src = src.replace(/(\/jaguar\/3.2$)/g, '/jaguar/32');
+  src = src.replace(/(\/dodge\/sx-2.0\/)/g, '/dodge/sx-20/');
+  src = src.replace(/(\/dodge\/sx-2.0$)/g, '/dodge/sx-20');
+  src = src.replace(/(\/dodge\/st.-regis\/)/g, '/dodge/st-regis/');
+  src = src.replace(/(\/dodge\/st.-regis$)/g, '/dodge/st-regis');
+  src = src.replace(/(\/ferrari\/mondial-3.2\/)/g, '/ferrari/mondial-32/');
+  src = src.replace(/(\/ferrari\/mondial-3.2$)/g, '/ferrari/mondial-32');
+  src = src.replace(/(\/mx5-miata\/)/g, '/mx-5-miata/');
+  src = src.replace(/(\/mx5-miata$)/g, '/mx-5-miata');
+  src = src.replace(/(\/cl55amg\/)/g, '/cl55-amg/');
+  src = src.replace(/(\/cl55amg$)/g, '/cl55-amg');
+  src = src.replace(/(\/f150\/)/g, '/f-150/');
+  src = src.replace(/(\/f150$)/g, '/f-150');
+  src = src.replace(/(\/rx2\/)/g, '/rx-2/');
+  src = src.replace(/(\/rx2$)/g, '/rx-2');
+  src = src.replace(/(\/rx3\/)/g, '/rx-3/');
+  src = src.replace(/(\/rx3$)/g, '/rx-3');
+  src = src.replace(/(\/rx4\/)/g, '/rx-4/');
+  src = src.replace(/(\/rx4$)/g, '/rx-4');
+  src = src.replace(/(\/rx7\/)/g, '/rx-7/');
+  src = src.replace(/(\/rx7$)/g, '/rx-7');
+  src = src.replace(/(\/rx8\/)/g, '/rx-8/');
+  src = src.replace(/(\/rx8$)/g, '/rx-8');
+  src = src.replace(/(\/mx6\/)/g, '/mx-6/');
+  src = src.replace(/(\/mx6$)/g, '/mx-6');
+  src = src.replace(/(\/mx3\/)/g, '/mx-3/');
+  src = src.replace(/(\/mx3$)/g, '/mx-3');
+  src = src.replace(/(\/e55amg\/)/g, '/e55-amg/');
+  src = src.replace(/(\/e55amg$)/g, '/e55-amg');
+  src = src.replace(/(\/crv\/)/g, '/cr-v/');
+  src = src.replace(/(\/crv$)/g, '/cr-v');
+  src = src.replace(/(\/crz\/)/g, '/cr-z/');
+  src = src.replace(/(\/crz$)/g, '/cr-z');
 
   // this should come last as other substitutions might have unnecessary space.
   src = src.replace(/_/g, ' ');
@@ -425,6 +529,7 @@ export function isAlphaNumeric(str) {
 export function consoler(label, value) {
   // eslint-disable-next-line no-console
   console.log(`\n###CONSOLE LOGGER >> ${label}: `, value);
+  // eslint-disable-next-line no-console
   console.log('\n');
 
   return true;
@@ -441,3 +546,4 @@ export function engineDecode(str) {
 
   return engine;
 }
+

@@ -166,11 +166,11 @@ export default class Pagetype extends SeoApiService {
   async getAttributes(patternList, data) {
     let serialPattern;
     const presponse = [];
-
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < patternList.length; ++i) {
       serialPattern = patternList[i].split('_');
 
+      consoler('serialPattern', serialPattern);
       try {
         // eslint-disable-next-line no-await-in-loop
         const presult = await Promise.all(this.validatePattern(serialPattern, data))
@@ -232,9 +232,11 @@ export default class Pagetype extends SeoApiService {
     const promiseList = [];
     const tablesList = [];
     let engineData = [];
-    _.forEach(serialPattern, (table) => {
+    _.forEach(serialPattern, async (table) => {
       tablesList.push(table);
-
+      let varData = decode(data[i]);
+      varData = varData.replace('-', ' ');
+      consoler('varData', varData);
       switch (table) {
         case 'engines':
           engineData = engineDecode(data[i]);
@@ -247,13 +249,14 @@ export default class Pagetype extends SeoApiService {
 
         case 'sku':
           promiseList.push(modelMappings[table].findOne({
-            where: { [fieldMappings[table]]: decode(data[i]) },
+            where: { [fieldMappings[table]]: varData },
           }));
           break;
 
         default:
+          // TODO Improve the decoding mapping
           promiseList.push(modelMappings[table].findOne({
-            where: { [fieldMappings[table]]: decode(data[i]) },
+            where: { [fieldMappings[table]]: varData },
           }));
       }
 
@@ -267,21 +270,19 @@ export default class Pagetype extends SeoApiService {
         }));
       _.forEach(presult.presults, (dbres) => {
         if (dbres && dbres !== null && dbres.dataValues) {
-          consoler('dbres', dbres._modelOptions.name.plural);
-
           attributes.push(dbres.dataValues);
         }
       });
 
+      consoler('validatePattern', attributes);
       if (serialPattern.length === attributes.length) {
-        consoler('validatePattern', attributes);
 
         return attributes;
       }
 
       return [];
     } catch (error) {
-      consoler('ERROR on ', error);
+      consoler('ERROR on validatePattern', error);
 
       return error;
     }

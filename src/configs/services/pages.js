@@ -31,10 +31,10 @@ export default {
   ymms_pla_sku_pla: 'ymms_pla_sku_pla',
   one_dimension: ['makes', 'partnames', 'brands', 'toplevel', 'category'],
   two_dimension: ['makes_models', 'makes_partnames', 'brands_partnames'],
-  three_dimension: ['makes_models_partnames'],
+  three_dimension: ['makes_models_partnames', 'years_makes_models', 'partnames_brands_sku'],
   four_dimension: ['partnames_makes_models_years', 'universal_partnames_brands_sku', 'universal_brands_partnames_sku'],
   five_dimension: ['makes_models_brands_years_sku', 'years_makes_models_partnames_brands'],
   six_dimension: ['makes_models_brands_partnames_years_sku', 'years_makes_models_partnames_brands_sku'],
-  seven_dimension: [ 'makes_models_brands_partnames_years_submodels_sku', 'years_makes_models_submodels_partnames_brands_sku'],
+  seven_dimension: ['makes_models_brands_partnames_years_submodels_sku', 'years_makes_models_submodels_partnames_brands_sku'],
   eight_dimension: ['makes_models_brands_partnames_years_submodels_engines_sku', 'years_makes_models_submodels_engines_partnames_brands_sku'],
 };
