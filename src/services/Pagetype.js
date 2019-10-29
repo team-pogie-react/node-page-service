@@ -11,10 +11,9 @@ import {
   consoler, decode, engineDecode,
 } from '../core/helpers';
 
-
 const {
   Makes, Models, Partnames, Brands, Category, Toplevel,
-  Engines, Submodels, Sku, Years,
+  Engines, Submodels, Sku, Years, sequelize,
 } = require('../core/Db').default;
 
 export default class Pagetype extends SeoApiService {
@@ -198,8 +197,6 @@ export default class Pagetype extends SeoApiService {
 
 
   async validatePattern(serialPattern, data) {
-    consoler('serialPattern', serialPattern);
-
     let i = 0;
     const attributes = [];
 
@@ -232,11 +229,32 @@ export default class Pagetype extends SeoApiService {
     const promiseList = [];
     const tablesList = [];
     let engineData = [];
+
+    let tlcMapData = [];
+    let tlcMapKey = [];
+
+    // check if the pattern is a category type
+    if (serialPattern[0] === 'toplevel' || serialPattern[0] === 'category') {
+      // check on tlcMapKey for mapping
+      tlcMapKey = await this.cache.get('tlcMapkey');
+      if (tlcMapKey) {
+        tlcMapData = JSON.parse(JSON.stringify(tlcMapKey));
+      }
+    }
     _.forEach(serialPattern, async (table) => {
       tablesList.push(table);
+
+      // TODO Improve the decoding mapping
       let varData = decode(data[i]);
-      varData = varData.replace('-', ' ');
+
+      if (tlcMapData[varData]) {
+        varData = tlcMapData[varData];
+      } else {
+        varData = varData.replace('-', ' ');
+      }
+
       consoler('varData', varData);
+
       switch (table) {
         case 'engines':
           engineData = engineDecode(data[i]);
@@ -247,6 +265,10 @@ export default class Pagetype extends SeoApiService {
           }
           break;
 
+        case 'category':
+          promiseList.push(sequelize.query(`SELECT category.cat_id, category.cat_name, toplevel_category.tlc_id, toplevel_category.tlc_name FROM category join category_toplevel on category.cat_id = category_toplevel.cat_id join toplevel_category on toplevel_category.tlc_id = category_toplevel.tlc_id WHERE category.cat_name = '${varData}' LIMIT 1;`));
+          break;
+
         case 'sku':
           promiseList.push(modelMappings[table].findOne({
             where: { [fieldMappings[table]]: varData },
@@ -254,7 +276,7 @@ export default class Pagetype extends SeoApiService {
           break;
 
         default:
-          // TODO Improve the decoding mapping
+          consoler(`default promiseList for ${table}`, varData);
           promiseList.push(modelMappings[table].findOne({
             where: { [fieldMappings[table]]: varData },
           }));
@@ -263,20 +285,27 @@ export default class Pagetype extends SeoApiService {
       i += 1;
     });
 
+
     try {
       const presult = await Promise.all(promiseList)
         .then(([...presults]) => Promise.resolve({
           presults,
         }));
+
       _.forEach(presult.presults, (dbres) => {
+        consoler('dbres', dbres);
         if (dbres && dbres !== null && dbres.dataValues) {
           attributes.push(dbres.dataValues);
+        }
+        // this means it came from raw queries
+        if (dbres && dbres !== null && !dbres.dataValues) {
+          consoler('dbres[0]', ...dbres[0]);
+          attributes.push(...dbres[0]);
         }
       });
 
       consoler('validatePattern', attributes);
       if (serialPattern.length === attributes.length) {
-
         return attributes;
       }
 

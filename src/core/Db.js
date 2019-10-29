@@ -63,4 +63,5 @@ export default {
   Submodels,
   Sku,
   Years,
+  sequelize,
 };

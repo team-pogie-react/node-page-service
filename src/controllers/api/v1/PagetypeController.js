@@ -67,7 +67,7 @@ export default class PagetypeController extends BaseController {
       }
 
       // check if exist on redis
-      const redisCache = await this.cache.get(requestUri);
+      const redisCache = await this.cache.get(uri);
       consoler('redisCache', redisCache);
       if (redisCache) {
         result.results = redisCache;
