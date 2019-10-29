@@ -81,8 +81,6 @@ export default class PagetypeController extends BaseController {
       const rdrResults = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
-
-      // TODO work with other statuses like redirect
       if (redirectorData && redirectorData.status === 'ACTIVE') {
         consoler('redirectorData', redirectorData);
         rdrResults.status_code = redirectorData.status_code;
@@ -192,7 +190,6 @@ export default class PagetypeController extends BaseController {
     });
   }
 
-
   /**
    * Aggregate service calls for PIMCORE page.
    *
@@ -236,4 +233,5 @@ export default class PagetypeController extends BaseController {
         });
     });
   }
+
 }

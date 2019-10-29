@@ -65,13 +65,15 @@ export function decode(text = '') {
   src = src.replace(/(\/k-n$)/g, '/k-and-n');
   src = src.replace(/(\/j-l\/)/g, '/j-and-l/');
   src = src.replace(/(\/j-l$)/g, '/j-and-l');
-  src = src.replace(/-fs-/g, '-');
-  src = src.replace(/-dot-/g, '');
-  src = src.replace(/-qt-/g, '');
-  src = src.replace(/--and--/g, '-and-');
-  src = src.replace(/-comma-/g, '');
-  src = src.replace(/-openp-/g, '');
-  src = src.replace(/-closep-/g, '');
+  src = src.replace(/-and-/g, '&');
+  src = src.replace(/-comma-/g, ',');
+  src = src.replace(/-dot-/g, '.');
+  src = src.replace(/-fs-/g, '/');
+  src = src.replace(/-qt-/g, '"');
+  src = src.replace(/-openp-/g, '(');
+  src = src.replace(/-closep-/g, ')');
+  src = src.replace(/-plus-/g, '+');
+  src = src.replace(/-semi-/g, ';');
   src = src.replace(/\.html/g, '');
   src = src.replace(/\/details/g, '');
   src = src.replace(/_/g, '-');
@@ -541,9 +543,8 @@ export function engineDecode(str) {
   let len = 0;
   const engine = [];
   for (i = 0, len = engineData.length; i < len; i += 1) {
-    engine[i] = decode(engineData[i]).replace('L', '').trim();
+    engine[i] = decode(engineData[i]).replace('L', '').trim().replace(/-/g, '');
   }
 
   return engine;
 }
-

@@ -7,6 +7,7 @@ import SeoApiService from './SeoApiService';
 import TIMEOUTS from '../configs/timeouts';
 import { urls, cache } from '../configs/services';
 import PageTransformer from '../transformers/PageTransformer';
+import Pagemap from '../configs/services/pagemap';
 import {
   consoler, decode, engineDecode,
 } from '../core/helpers';
@@ -241,16 +242,22 @@ export default class Pagetype extends SeoApiService {
         tlcMapData = JSON.parse(JSON.stringify(tlcMapKey));
       }
     }
+
     _.forEach(serialPattern, async (table) => {
       tablesList.push(table);
 
       // TODO Improve the decoding mapping
       let varData = decode(data[i]);
+      const varDataMapped = Pagemap[varData];
+      
 
       if (tlcMapData[varData]) {
         varData = tlcMapData[varData];
+      } else if (varDataMapped) {  
+        varData = varDataMapped;
       } else {
-        varData = varData.replace('-', ' ');
+        varData = varData.replace(/-/g, ' ');
+        varData = varData.replace(/_/g, ' ');
       }
 
       consoler('varData', varData);
@@ -258,6 +265,8 @@ export default class Pagetype extends SeoApiService {
       switch (table) {
         case 'engines':
           engineData = engineDecode(data[i]);
+          consoler('engineData', data[i]);
+          consoler('engineData', engineData);
           if (engineData.length === 2) {
             promiseList.push(modelMappings[table].findOne({
               where: { cylinders: engineData[0], liter: engineData[1] },
