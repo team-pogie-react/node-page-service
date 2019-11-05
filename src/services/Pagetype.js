@@ -44,10 +44,14 @@ export default class Pagetype extends SeoApiService {
       redirectorUri = redirectorUri.substr(uri.length);
     }
     redirectorUri = redirectorUri.toLowerCase();
-    redirectorUri = md5(redirectorUri);
+    // /details/replacement/wheel-bearing/repv288402.html
+    // /details/Replacement/Wheel_Bearing/REPV288402.html
+    consoler('redirectorUri', decode(redirectorUri) );
+    redirectorUri = md5( decode(redirectorUri) );
     const params = {
       site: this.getDomain(),
       hash_code: redirectorUri,
+      apikey: 'anzhbnJvaXVz',
     };
     consoler('params', params);
     const query = queryString.stringify(params, { encodeValuesOnly: true });
@@ -182,7 +186,7 @@ export default class Pagetype extends SeoApiService {
         if (presult && presult.attributes && presult.attributes.length > 0) {
           presult.serialPattern = patternList[i];
           presponse.serialPattern = presult.serialPattern;
-          presponse.attributes = presult.attributes;
+          presponse.attributes = { ...presult.attributes };
           consoler('presponse', presponse);
 
           return presult;
@@ -242,26 +246,33 @@ export default class Pagetype extends SeoApiService {
       if (tlcMapKey) {
         tlcMapData = JSON.parse(JSON.stringify(tlcMapKey));
       }
+      consoler('tlcMapData', tlcMapData);
     }
 
     _.forEach(serialPattern, async (table) => {
       tablesList.push(table);
 
+      consoler('data[i]', data[i]);
       // TODO Improve the decoding mapping
       let varData = decode(data[i]);
       const varDataMapped = Pagemap[varData];
-      
 
-      if (tlcMapData[varData]) {
-        varData = tlcMapData[varData];
-      } else if (varDataMapped) {  
+      consoler('before varData', varData);
+
+      // check if the pattern is a category type
+      if (serialPattern[0] === 'toplevel' || serialPattern[0] === 'category') {
+        consoler('tlcMapData[data[i]]', tlcMapData[data[i]]);
+      }
+      if (tlcMapData[data[i]]) {
+        varData = tlcMapData[data[i]];
+      } else if (varDataMapped) {
         varData = varDataMapped;
       } else {
         varData = varData.replace(/-/g, ' ');
         varData = varData.replace(/_/g, ' ');
       }
 
-      consoler('varData', varData);
+      consoler('after varData', varData);
 
       switch (table) {
         case 'engines':
@@ -276,7 +287,7 @@ export default class Pagetype extends SeoApiService {
           break;
 
         case 'category':
-          promiseList.push(sequelize.query(`SELECT category.cat_id, category.cat_name, toplevel_category.tlc_id, toplevel_category.tlc_name FROM category join category_toplevel on category.cat_id = category_toplevel.cat_id join toplevel_category on toplevel_category.tlc_id = category_toplevel.tlc_id WHERE category.cat_name = '${varData}' LIMIT 1;`));
+          promiseList.push(sequelize.query(`SELECT 'cat_label' as 'category', category.cat_id, category.cat_name, 'tlc_label' as 'toplevel_category' ,toplevel_category.tlc_id, toplevel_category.tlc_name FROM category join category_toplevel on category.cat_id = category_toplevel.cat_id join toplevel_category on toplevel_category.tlc_id = category_toplevel.tlc_id WHERE category.cat_name = '${varData}' LIMIT 1;`));
           break;
 
         case 'sku':
@@ -305,12 +316,25 @@ export default class Pagetype extends SeoApiService {
       _.forEach(presult.presults, (dbres) => {
         //  consoler('dbres', dbres);
         if (dbres && dbres !== null && dbres.dataValues) {
-          attributes.push(dbres.dataValues);
+          const dataVal = {};
+          dataVal[dbres._modelOptions.name.singular] = dbres.dataValues;
+          consoler('dataVal', dataVal);
+          attributes.push(dataVal);
         }
         // this means it came from raw queries
         if (dbres && dbres !== null && !dbres.dataValues) {
-          consoler('dbres[0]', ...dbres[0]);
-          attributes.push(...dbres[0]);
+          const dataVal = {};
+          const res = {};
+          let cat = [];
+          cat = [...dbres[0]];
+          consoler('dbres[cat]', cat);
+          dataVal.cat_id = cat[0].cat_id;
+          dataVal.cat_name = cat[0].cat_name;
+          dataVal.tlc_id = cat[0].tlc_id;
+          dataVal.tlc_name = cat[0].tlc_name;
+          res.cat = dataVal;
+          consoler('dataVal', res);
+          attributes.push(res);
         }
       });
 

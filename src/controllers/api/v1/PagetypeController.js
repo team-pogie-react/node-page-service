@@ -83,8 +83,8 @@ export default class PagetypeController extends BaseController {
       const rdrResults = {};
       redirectorData = await self._getRedirectorData(domain, requestUri);
 
+      consoler('redirectorData', redirectorData);
       if (redirectorData && redirectorData.status === 'ACTIVE') {
-        consoler('redirectorData', redirectorData);
         rdrResults.status_code = redirectorData.status_code;
         rdrResults.page_type = redirectorData.page_type;
         rdrResults.request_url = requestUri;
@@ -98,12 +98,16 @@ export default class PagetypeController extends BaseController {
         rdrResults.request_url = requestUri;
         rdrResults.site = domain;
         rdrResults.append = 1;
+
+        return response.withData(rdrResults);
       } else if (redirectorData && redirectorData.status === 'KILL') {
         rdrResults.status_code = redirectorData.status_code;
         rdrResults.redirect_url = redirectorData.redirect_url;
         rdrResults.request_url = requestUri;
         rdrResults.site = domain;
         rdrResults.append = 1;
+        
+        return response.withData(rdrResults);
       } else {
         // do nothing
       }
