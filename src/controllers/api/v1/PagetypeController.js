@@ -38,6 +38,8 @@ export default class PagetypeController extends BaseController {
    * @param {Object} response
    *
    * @return {Array<Object>}
+   *
+   * TODO add the pruning logic
    */
   async route(request, response) {
     const self = this;
@@ -139,8 +141,7 @@ export default class PagetypeController extends BaseController {
           result.contents = pimcoreData.data;
         } else {
           // if no pimcore data try getting some from Content
-
-
+          result.contents = '';
         }
       } else {
         const error = {};

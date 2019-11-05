@@ -136,6 +136,7 @@ export default class Pagetype extends SeoApiService {
       catalogSource: 'Endeca',
       pipeDelimited: '0',
       site: this.getDomain(),
+      navParams: '{"limit":1}',
       ...uriParam,
     };
 
@@ -302,7 +303,7 @@ export default class Pagetype extends SeoApiService {
         }));
 
       _.forEach(presult.presults, (dbres) => {
-        consoler('dbres', dbres);
+        //  consoler('dbres', dbres);
         if (dbres && dbres !== null && dbres.dataValues) {
           attributes.push(dbres.dataValues);
         }
