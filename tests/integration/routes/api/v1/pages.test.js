@@ -14,7 +14,7 @@ describe('Pages Routes', () => {
   const makeModel = '/audi/5000-quattro';
   const makeModelPart = '/brake-caliper/acura/cl';
   const yearMakeModelPart = '/water-pump/audi/5000-quattro/1987';
-  const pagesEndpoint = '/v1/pages';
+  const pagesEndpoint = '/v1/pagetype';
 
   it('returns aggregated response for home', (done) => {
     app.get('/v1/home')

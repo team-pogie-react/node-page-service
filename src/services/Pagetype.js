@@ -47,7 +47,7 @@ export default class Pagetype extends SeoApiService {
     // /details/replacement/wheel-bearing/repv288402.html
     // /details/Replacement/Wheel_Bearing/REPV288402.html
     consoler('redirectorUri', decode(redirectorUri) );
-    redirectorUri = md5( decode(redirectorUri) );
+    redirectorUri = md5( redirectorUri.replace(/_/g, '-') );
     const params = {
       site: this.getDomain(),
       hash_code: redirectorUri,
