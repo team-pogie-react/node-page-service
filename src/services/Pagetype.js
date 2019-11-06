@@ -46,8 +46,8 @@ export default class Pagetype extends SeoApiService {
     redirectorUri = redirectorUri.toLowerCase();
     // /details/replacement/wheel-bearing/repv288402.html
     // /details/Replacement/Wheel_Bearing/REPV288402.html
-    consoler('redirectorUri', decode(redirectorUri) );
-    redirectorUri = md5( redirectorUri.replace(/_/g, '-') );
+    consoler('redirectorUri', decode(redirectorUri));
+    redirectorUri = md5(redirectorUri.replace(/_/g, '-'));
     const params = {
       site: this.getDomain(),
       hash_code: redirectorUri,
@@ -178,7 +178,7 @@ export default class Pagetype extends SeoApiService {
       consoler('serialPattern', serialPattern);
       try {
         // eslint-disable-next-line no-await-in-loop
-        const presult = await Promise.all(this.validatePattern(serialPattern, data))
+        const presult = await Promise.all(this.validatePattern(serialPattern, data, false))
           .then(([...attributes]) => Promise.resolve({
             attributes,
           }));
@@ -196,14 +196,40 @@ export default class Pagetype extends SeoApiService {
 
         return error;
       }
+
+
+      consoler('reverse this serialPattern', serialPattern);
+      try {
+        // eslint-disable-next-line no-await-in-loop
+        const presult = await Promise.all(this.validatePattern(serialPattern, data, true))
+          .then(([...attributes]) => Promise.resolve({
+            attributes,
+          }));
+
+        if (presult && presult.attributes && presult.attributes.length > 0) {
+          presult.serialPattern = patternList[i];
+          presponse.serialPattern = presult.serialPattern;
+          presponse.attributes = { ...presult.attributes };
+          consoler('presponse', presponse);
+
+          return presult;
+        }
+      } catch (error) {
+        consoler('presult ERROR on ', error);
+
+        return error;
+      }
+
+
     }
 
     return [];
   }
 
 
-  async validatePattern(serialPattern, data) {
+  async validatePattern(serialPattern, data, reversed) {
     let i = 0;
+    let pattern = [];
     const attributes = [];
 
     const modelMappings = {
@@ -249,7 +275,15 @@ export default class Pagetype extends SeoApiService {
       consoler('tlcMapData', tlcMapData);
     }
 
-    _.forEach(serialPattern, async (table) => {
+    if (reversed) {
+      pattern = serialPattern.slice(0).reverse();
+    } else {
+      pattern = serialPattern;
+    }
+    
+    consoler('pattern', pattern);
+
+    _.forEach(pattern, async (table) => {
       tablesList.push(table);
 
       consoler('data[i]', data[i]);
@@ -257,7 +291,6 @@ export default class Pagetype extends SeoApiService {
       let varData = decode(data[i]);
       const varDataMapped = Pagemap[varData];
 
-      consoler('before varData', varData);
 
       // check if the pattern is a category type
       if (serialPattern[0] === 'toplevel' || serialPattern[0] === 'category') {
@@ -272,7 +305,6 @@ export default class Pagetype extends SeoApiService {
         varData = varData.replace(/_/g, ' ');
       }
 
-      consoler('after varData', varData);
 
       switch (table) {
         case 'engines':
@@ -305,7 +337,6 @@ export default class Pagetype extends SeoApiService {
 
       i += 1;
     });
-
 
     try {
       const presult = await Promise.all(promiseList)

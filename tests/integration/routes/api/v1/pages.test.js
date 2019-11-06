@@ -16,33 +16,6 @@ describe('Pages Routes', () => {
   const yearMakeModelPart = '/water-pump/audi/5000-quattro/1987';
   const pagesEndpoint = '/v1/pagetype';
 
-  it('returns aggregated response for home', (done) => {
-    app.get('/v1/home')
-      .query({ domain: DOMAINS.CARPARTS })
-      .then((response) => {
-        const expectedKeys = [
-          'widgets',
-          'shopByCategories',
-          'shopByTopBrands',
-          'shopByPopularParts',      
-          'featuredMakes',    
-          'years',
-          'navigationCategories',
-        ];
-
-        response.should.have.status(200);
-        response.body.should.be.an('object');
-        response.body.should.have.property('data');
-        response.body.data.should.include.all.keys(expectedKeys);
-
-        _.each(expectedKeys, (key) => {
-          response.body.data[key].should.not.be.empty;
-        });
-
-        done();
-      }).catch(done);
-  });
-
   it('returns aggregated response for make model page', (done) => {
     app.get(pagesEndpoint)
       .query({ domain: DOMAINS.CARPARTS, uri: makeModel })

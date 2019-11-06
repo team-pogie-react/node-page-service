@@ -40,6 +40,7 @@ export default class PagetypeController extends BaseController {
    * @return {Array<Object>}
    *
    * TODO add the pruning logic
+   * TODO traverse checking on pldb
    */
   async route(request, response) {
     const self = this;
