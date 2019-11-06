@@ -164,6 +164,15 @@ export default class PagetypeController extends BaseController {
       consoler('data catalogData', catalogData);
       if (catalogData) {
         result.products = catalogData;
+      } else {
+
+        const error = {};
+        error.message = 'catalogData Not Found';
+        error.custom_code = 121;
+        error.status_code = 206;
+        result.error = error;
+
+        return response.withData(result);
       }
 
       return response.withData(result);

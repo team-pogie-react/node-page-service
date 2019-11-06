@@ -40,13 +40,14 @@ export default class Pagetype extends SeoApiService {
     let redirectorUri;
 
     redirectorUri = uri;
-    if (uri.charAt(uri.length) === '/') {
-      redirectorUri = redirectorUri.substr(uri.length);
+
+    if (uri.charAt(uri.length - 1) === '/') {
+      redirectorUri = uri.substring(0, uri.length - 1);
     }
     redirectorUri = redirectorUri.toLowerCase();
     // /details/replacement/wheel-bearing/repv288402.html
     // /details/Replacement/Wheel_Bearing/REPV288402.html
-    consoler('redirectorUri', decode(redirectorUri));
+    consoler('redirectorUri', redirectorUri);
     redirectorUri = md5(redirectorUri.replace(/_/g, '-'));
     const params = {
       site: this.getDomain(),
